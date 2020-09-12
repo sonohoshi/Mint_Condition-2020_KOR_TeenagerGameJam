@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject[,] InGameMap;
     public int[][,] Map;
 
+    private int[] cameraSize;
+
     void MapGeneration(int[,] map)
     {
         for (int i = 0; i < map.GetLength(0); i++)
@@ -23,6 +25,10 @@ public class GameManager : MonoBehaviour
                  unity 안에서의 y값에 -를 곱해줍니다.
                  */
                 InGameMap[i,j] = Instantiate(Obj[map[i, j]], new Vector3(j * tileSize, -i * tileSize, 0),Quaternion.identity);
+                if (map[i, j] == 2 || map[i, j] == 3)
+                {
+                    InGameMap[i, j].AddComponent<Entity>().SetXAndY(i, j).SetMyType(map[i, j]);
+                }
             }
         }
     }
@@ -31,16 +37,18 @@ public class GameManager : MonoBehaviour
     {
         // 총 5개의 스테이지를 만들 것이므로 5개의 2차원 배열을 가지는 3차원 가변 배열 생성
         Map = new int[5][,];
+        cameraSize = new int[5];
         // 1스테이지 맵 구조 초기화
         Map[0] = new int[6, 9]
         {
-            {1, 1, 1, 1, 1, 1, 4, 4, 4},
+            {1, 1, 1, 2, 1, 2, 4, 4, 4},
             {4, 4, 1, 0, 0, 1, 4, 4, 4},
             {4, 4, 1, 0, 0, 1, 4, 4, 4},
             {4, 4, 1, 0, 0, 1, 4, 4, 4},
             {4, 4, 1, 0, 0, 1, 4, 4, 4},
             {4, 4, 1, 1, 1, 3, 1, 1, 1}
         };
+        cameraSize[0] = 18;
         
         MapInitializing(0);
         // 모든 초기 작업이 끝난 뒤 싱글턴 인스턴스 초기화
@@ -52,6 +60,9 @@ public class GameManager : MonoBehaviour
         int x = Map[stage].GetLength(0);
         int y = Map[stage].Length / Map[0].GetLength(0);
         InGameMap = new GameObject[x, y];
+        Camera.main.orthographicSize = cameraSize[stage];
+        Debug.Log($"x:{x}, y:{y}");
+        Camera.main.transform.position = new Vector3((y * tileSize) * 0.5f, (x * -2f), -10f);
         // MapGenereation 메소드에는 각 스테이지-1을 인덱싱 해서 넣어주면 됨.
         MapGeneration(Map[stage]);
     }

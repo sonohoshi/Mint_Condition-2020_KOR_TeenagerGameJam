@@ -45,7 +45,9 @@ public class Player : Entity
         var moveResult = base.Move(x, y, map);
         if (moveResult == box)
         {
-            // To-Do
+            var boxX = (int) x + posX;
+            var boxY = (int) y + posY;
+            GameManager.Instance.InGameMap[boxX, boxY].GetComponent<Entity>().Move(x, y, map);
         }
         return moveResult;
     }
