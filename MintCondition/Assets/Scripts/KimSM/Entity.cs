@@ -8,7 +8,8 @@ public class Entity : MonoBehaviour
     public GameObject[] Obj;
     
     private readonly int wall = 0;
-    private readonly int box = -1;
+    private readonly int box = 2;
+    private readonly int enemy = 3;
 
     private int posX, posY;
     private int[,] map;
@@ -25,14 +26,15 @@ public class Entity : MonoBehaviour
     
     void Awake()
     {
+        /* ~Test Code~
         String arr = "";
-        map = new int[5, 5]
+        map = new int[5, 6]
         {
-            {0, 0, 0, 0, 0},
-            {0, 1, 1, 1, 0},
-            {0, 1, 1, 1, 0},
-            {1, 1, 0, 0, 0},
-            {0, 1, 1, 0, 0}
+            {0, 0, 0, 0, 0, 0},
+            {0, 1, 1, 1, 0, 0},
+            {0, 1, 1, 1, 0, 0},
+            {1, 1, 0, 0, 0, 0},
+            {0, 1, 1, 0, 0, 0}
         };
         posX = 1;
         posY = 2;
@@ -48,6 +50,7 @@ public class Entity : MonoBehaviour
         }
         Debug.Log($"{map.GetLength(0)}, {map.Length/map.GetLength(0)}");
         Debug.Log(arr);
+        */
         //Move(MoveDirection.Left, MoveDirection.InPlace, new int[100,2]);
     }
 
@@ -86,7 +89,7 @@ public class Entity : MonoBehaviour
         if (sx < 0 || sx >= map.GetLength(0)) return 0;
         if (sy < 0 || sy >= map.Length / map.GetLength(0)) return 0;
 
-        if (map[sx, sy] == wall || map[sx, sy] == box)
+        if (map[sx, sy] == wall || map[sx, sy] == box || map[sx,sy] == enemy)
             return map[sx, sy];
 
         posX = sx;
