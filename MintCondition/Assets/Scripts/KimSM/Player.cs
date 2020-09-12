@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : Entity
 {
     public int[,] map;
+    public GameObject[,] inGameMap;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,5 +39,15 @@ public class Player : Entity
         {
             Debug.Log(Move(MoveDirection.InPlace, MoveDirection.DownOrRight, map));
         }
+    }
+
+    public override int Move(MoveDirection x, MoveDirection y, int[,] map)
+    {
+        var moveResult = base.Move(x, y, map);
+        if (moveResult == box)
+        {
+            
+        }
+        return 0;
     }
 }

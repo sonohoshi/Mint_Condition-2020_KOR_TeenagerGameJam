@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    private readonly int wall = 0;
-    private readonly int box = 2;
-    private readonly int enemy = 3;
+    protected readonly int wall = 0;
+    protected readonly int box = 2;
+    protected readonly int enemy = 3;
 
     protected int posX, posY;
 
@@ -21,7 +21,7 @@ public class Entity : MonoBehaviour
 
     public int HealthPoint;
 
-    public int Move(MoveDirection x, MoveDirection y, int [,] map)
+    public virtual int Move(MoveDirection x, MoveDirection y, int [,] map)
     {
         var sx = posX + (int) x;
         var sy = posY + (int) y;
