@@ -8,9 +8,16 @@ public class Entity : MonoBehaviour
     protected readonly int wall = 0;
     protected readonly int box = 2;
     protected readonly int enemy = 3;
+    protected float tileSize;
 
     protected int posX, posY;
 
+    void Awake()
+    {
+        tileSize = 5f;
+        Debug.Log(tileSize);
+    }
+    
     // Move 메소드에 각 값을 넣으면 됨.
     public enum MoveDirection
     {
@@ -34,7 +41,8 @@ public class Entity : MonoBehaviour
 
         posX = sx;
         posY = sy;
-        transform.position = new Vector3(posY, -posX, 0);
+        Debug.Log($"tilesize : {tileSize}");
+        transform.position = new Vector3(posY * tileSize, -posX * tileSize, 0);
         
         #if UNITY_EDITOR
         Debug.Log($"In Array : {posX}, {posY}");

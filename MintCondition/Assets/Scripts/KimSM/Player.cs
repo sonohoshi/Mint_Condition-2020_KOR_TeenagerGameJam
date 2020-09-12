@@ -5,15 +5,14 @@ using UnityEngine;
 public class Player : Entity
 {
     public int[,] map;
-    public GameObject[,] inGameMap;
-    // Start is called before the first frame update
+
     void Start()
     {
-        
+        map = GameManager.Instance.Map[0];
     }
-
+    
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         GetMovingInput();
     }
@@ -46,8 +45,8 @@ public class Player : Entity
         var moveResult = base.Move(x, y, map);
         if (moveResult == box)
         {
-            
+            // To-Do
         }
-        return 0;
+        return moveResult;
     }
 }
