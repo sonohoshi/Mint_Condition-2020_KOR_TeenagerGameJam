@@ -43,4 +43,14 @@ public class Entity : MonoBehaviour
         
         return 1;
     }
+
+    public void Damaged()
+    {
+        HealthPoint--;
+        if (HealthPoint <= 0)
+        {
+            // To-Do Something... Animation or SE, etc.
+            Destroy(gameObject);
+        }
+    }
 }
