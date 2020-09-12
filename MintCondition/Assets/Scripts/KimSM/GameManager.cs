@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < map.Length/map.GetLength(0); j++)
             {
+                /*
+                 2차원 배열에서의 좌표계와 유니티 내의 좌표계는 차이가 있기 때문에, x와 y를 서로 바꿔 준 뒤
+                 unity 안에서의 y값에 -를 곱해줍니다.
+                 */
                 Instantiate(Obj[map[i, j]], new Vector3(j, -i, 0),Quaternion.identity);
             }
         }
