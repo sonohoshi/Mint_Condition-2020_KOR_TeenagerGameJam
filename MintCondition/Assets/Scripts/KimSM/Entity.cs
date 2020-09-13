@@ -80,6 +80,7 @@ public class Entity : MonoBehaviour
     
     public GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
     {
+        var isNotOuted = false;
         var toPosX = posX + (int) x;
         var toPosY = posY + (int) y;
 
@@ -88,16 +89,25 @@ public class Entity : MonoBehaviour
             return null;
         } 
         
-        while(CheckIndexOutOfRangeInArray(toPosX, toPosY, map))
+        // 배열의 범위를 벗어나지 않고 다음 확인할 수 있는 칸이 지나갈 수 있는 길일 때만 반복
+        while(isNotOuted = CheckIndexOutOfRangeInArray(toPosX, toPosY, map))
         {
+            if (map[toPosX,toPosY] == box || map[toPosX,toPosY] == enemy)
+            {
+                break;
+            }
+
+            if (map[toPosX, toPosY] == nullPointer)
+            {
+                isNotOuted = false;
+                break;
+            }
             
+            toPosX += (int) x;
+            toPosY += (int) y;
         }
-        
-        
-        
-        
-        
-        return null;
+
+        return isNotOuted ? GameManager.Instance.InGameMap[toPosX, toPosY] : null;
     }
 
     public void Damaged()
@@ -136,6 +146,10 @@ public class Entity : MonoBehaviour
 
     protected bool CheckIndexOutOfRangeInArray(int x, int y, int[,] map)
     {
+        #if UNITY_EDITOR
+        Debug.Log($"x : {x}, y : {y}, {map.GetLength(0)}, {map.Length / map.GetLength(0)}");
+        #endif
+        
         return (x >= 0 && x < map.GetLength(0)) && (y >= 0 && y < map.Length / map.GetLength(0));
     }
 }
