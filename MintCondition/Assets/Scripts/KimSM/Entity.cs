@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     protected float tileSize;
 
     public int posX, posY;
+    public int HealthPoint;
 
     private int myType;
 
@@ -29,18 +30,25 @@ public class Entity : MonoBehaviour
         InPlace = 0
     }
 
-    public int HealthPoint;
-
     public virtual int Move(MoveDirection x, MoveDirection y, int [,] map)
     {
         var sx = posX + (int) x;
         var sy = posY + (int) y;
-        
-        if (sx < 0 || sx >= map.GetLength(0)) return 0;
-        if (sy < 0 || sy >= map.Length / map.GetLength(0)) return 0;
 
-        if (map[sx, sy] == wall || map[sx, sy] == box || map[sx,sy] == enemy || map[sx,sy] == nullPointer)
+        if (sx < 0 || sx >= map.GetLength(0))
+        {
+            return 0;
+        }
+
+        if (sy < 0 || sy >= map.Length / map.GetLength(0))
+        {
+            return 0;
+        }
+
+        if (map[sx, sy] == wall || map[sx, sy] == box || map[sx, sy] == enemy || map[sx, sy] == nullPointer)
+        {
             return map[sx, sy];
+        }
 
         // 내가 이동하니까, 현재 자리를 이동할 수 있는 길인 1로 초기화
         map[posX, posY] = 1;
