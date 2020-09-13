@@ -9,6 +9,7 @@ public class Entity : MonoBehaviour
     protected readonly int box = 2;
     protected readonly int enemy = 3;
     protected readonly int nullPointer = 4;
+    
     protected float tileSize;
 
     public int posX, posY;
@@ -35,13 +36,9 @@ public class Entity : MonoBehaviour
         var toPosX = posX + (int) x;
         var toPosY = posY + (int) y;
 
-        // 본 if문과 아래의 if문은, 배열의 범위를 나갔을 때의 예외처리이다. 배열 밖은 0을 반환해 못움직이게 한다.
-        if (toPosX < 0 || toPosX >= map.GetLength(0))
-        {
-            return 0;
-        }
-
-        if (toPosY < 0 || toPosY >= map.Length / map.GetLength(0))
+        // 본 if문은 배열의 범위를 나갔을 때의 예외처리이다. 배열 밖은 0을 반환해 못움직이게 한다.
+        if ((toPosX < 0 || toPosX >= map.GetLength(0)) || 
+            (toPosY < 0 || toPosY >= map.Length / map.GetLength(0)))
         {
             return 0;
         }
@@ -62,7 +59,6 @@ public class Entity : MonoBehaviour
 
         StartCoroutine(SmoothMove(transform, new Vector3(posY * tileSize, -posX * tileSize, 0)));
         
-        //transform.position = new Vector3(posY * tileSize, -posX * tileSize, 0);
         map[posX, posY] = myType;
         GameManager.Instance.InGameMap[posX, posY] = this.gameObject;
 
@@ -73,6 +69,25 @@ public class Entity : MonoBehaviour
         
         // 이동에 성공하면 1을 반환한다.
         return 1;
+    }
+    
+    protected GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
+    {
+        var toPosX = posX + (int) x;
+        var toPosY = posY + (int) y;
+
+        // 본 if문은, 배열의 범위를 나갔을 때의 예외처리이다. 배열 밖은 null을 반환해 못움직이게 한다.
+        if ((toPosX < 0 || toPosX >= map.GetLength(0)) || 
+            toPosY < 0 || toPosY >= map.Length / map.GetLength(0))
+        {
+            return null;
+        }
+        
+        // 내가 이동하니까, 현재 자리를 이동할 수 있는 길인 1로 초기화
+        map[posX, posY] = 1;
+        GameManager.Instance.InGameMap[posX, posY] = GameManager.Instance.Obj[1];
+        
+        return null;
     }
 
     public void Damaged()
