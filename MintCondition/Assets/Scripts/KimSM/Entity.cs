@@ -42,13 +42,11 @@ public class Entity : MonoBehaviour
         
         var toPosX = posX + (int) x;
         var toPosY = posY + (int) y;
-
-        // 본 if문은 배열의 범위를 나갔을 때의 예외처리이다. 배열 밖은 0을 반환해 못움직이게 한다.
-        if ((toPosX < 0 || toPosX >= map.GetLength(0)) || 
-            (toPosY < 0 || toPosY >= map.Length / map.GetLength(0)))
+        
+        if (!CheckIndexOutOfRangeInArray(toPosX, toPosY, map))
         {
             return 0;
-        }
+        } 
 
         // 경비병이나 상자 등에 의해 막혔을 경우, 왜 막혔는지를 확인하기 위해 진로를 가로막은 오브젝트의 종류를 반환한다.
         if (map[toPosX, toPosY] == wall || map[toPosX, toPosY] == box || map[toPosX, toPosY] == enemy || map[toPosX, toPosY] == nullPointer)
@@ -80,21 +78,24 @@ public class Entity : MonoBehaviour
         return 1;
     }
     
-    protected GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
+    public GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
     {
         var toPosX = posX + (int) x;
         var toPosY = posY + (int) y;
 
-        // 본 if문은, 배열의 범위를 나갔을 때의 예외처리이다. 배열 밖은 null을 반환해 못움직이게 한다.
-        if ((toPosX < 0 || toPosX >= map.GetLength(0)) || 
-            toPosY < 0 || toPosY >= map.Length / map.GetLength(0))
+        if (!CheckIndexOutOfRangeInArray(toPosX, toPosY, map))
         {
             return null;
+        } 
+        
+        while(CheckIndexOutOfRangeInArray(toPosX, toPosY, map))
+        {
+            
         }
         
-        // 내가 이동하니까, 현재 자리를 이동할 수 있는 길인 1로 초기화
-        map[posX, posY] = 1;
-        GameManager.Instance.InGameMap[posX, posY] = GameManager.Instance.Obj[1];
+        
+        
+        
         
         return null;
     }
@@ -131,5 +132,10 @@ public class Entity : MonoBehaviour
         }
 
         isMoving = false;
+    }
+
+    protected bool CheckIndexOutOfRangeInArray(int x, int y, int[,] map)
+    {
+        return (x >= 0 && x < map.GetLength(0)) && (y >= 0 && y < map.Length / map.GetLength(0));
     }
 }
