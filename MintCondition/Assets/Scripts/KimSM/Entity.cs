@@ -11,7 +11,8 @@ public class Entity : MonoBehaviour
     protected readonly int nullPointer = 4;
     
     protected float tileSize;
-
+    protected bool isMoving;
+    
     public int posX, posY;
     public int HealthPoint;
 
@@ -21,6 +22,7 @@ public class Entity : MonoBehaviour
     {
         tileSize = 5f;
         Debug.Log(tileSize);
+        isMoving = false;
     }
     
     // Move 메소드에 각 값을 넣으면 됨.
@@ -33,6 +35,11 @@ public class Entity : MonoBehaviour
 
     public virtual int Move(MoveDirection x, MoveDirection y, int [,] map)
     {
+        if (isMoving)
+        {
+            return 0;
+        }
+        
         var toPosX = posX + (int) x;
         var toPosY = posY + (int) y;
 
@@ -49,6 +56,8 @@ public class Entity : MonoBehaviour
             return map[toPosX, toPosY];
         }
 
+        isMoving = true;
+        
         // 내가 이동하니까, 현재 자리를 이동할 수 있는 길인 1로 초기화
         map[posX, posY] = 1;
         GameManager.Instance.InGameMap[posX, posY] = GameManager.Instance.Obj[1];
@@ -120,5 +129,7 @@ public class Entity : MonoBehaviour
             original.position = Vector3.Lerp(original.position, moveTo, time);
             yield return new WaitForSeconds(.1f);
         }
+
+        isMoving = false;
     }
 }
