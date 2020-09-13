@@ -32,32 +32,37 @@ public class Entity : MonoBehaviour
 
     public virtual int Move(MoveDirection x, MoveDirection y, int [,] map)
     {
-        var sx = posX + (int) x;
-        var sy = posY + (int) y;
+        var toPosX = posX + (int) x;
+        var toPosY = posY + (int) y;
 
-        if (sx < 0 || sx >= map.GetLength(0))
+        // 본 if문과 아래의 if문은, 배열의 범위를 나갔을 때의 예외처리이다. 배열 밖은 0을 반환해 못움직이게 한다.
+        if (toPosX < 0 || toPosX >= map.GetLength(0))
         {
             return 0;
         }
 
-        if (sy < 0 || sy >= map.Length / map.GetLength(0))
+        if (toPosY < 0 || toPosY >= map.Length / map.GetLength(0))
         {
             return 0;
         }
 
-        if (map[sx, sy] == wall || map[sx, sy] == box || map[sx, sy] == enemy || map[sx, sy] == nullPointer)
+        // 경비병이나 상자 등에 의해 막혔을 경우, 왜 막혔는지를 확인하기 위해 진로를 가로막은 오브젝트의 종류를 반환한다.
+        if (map[toPosX, toPosY] == wall || map[toPosX, toPosY] == box || map[toPosX, toPosY] == enemy || map[toPosX, toPosY] == nullPointer)
         {
-            return map[sx, sy];
+            return map[toPosX, toPosY];
         }
 
         // 내가 이동하니까, 현재 자리를 이동할 수 있는 길인 1로 초기화
         map[posX, posY] = 1;
         GameManager.Instance.InGameMap[posX, posY] = GameManager.Instance.Obj[1];
         
-        posX = sx;
-        posY = sy;
+        posX = toPosX;
+        posY = toPosY;
         Debug.Log($"tilesize : {tileSize}");
-        transform.position = new Vector3(posY * tileSize, -posX * tileSize, 0);
+
+        StartCoroutine(SmoothMove(transform, new Vector3(posY * tileSize, -posX * tileSize, 0)));
+        
+        //transform.position = new Vector3(posY * tileSize, -posX * tileSize, 0);
         map[posX, posY] = myType;
         GameManager.Instance.InGameMap[posX, posY] = this.gameObject;
 
@@ -66,6 +71,7 @@ public class Entity : MonoBehaviour
         Debug.Log($"In Unity : {transform.position.x}, {transform.position.y}");
         #endif
         
+        // 이동에 성공하면 1을 반환한다.
         return 1;
     }
 
@@ -90,5 +96,14 @@ public class Entity : MonoBehaviour
     {
         myType = type;
         return this;
+    }
+
+    protected IEnumerator SmoothMove(Transform original, Vector3 moveTo)
+    {
+        for (float time = 0; time <= 1f; time += 0.1f)
+        {
+            original.position = Vector3.Lerp(original.position, moveTo, time);
+            yield return new WaitForSeconds(.1f);
+        }
     }
 }
