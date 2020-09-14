@@ -101,16 +101,6 @@ public class Human : Entity
         return moveResult;
     }
 
-    private IEnumerator CheckAnimationCompleted(string currentAnim, Action onComplete)
-    {
-        while (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(currentAnim))
-        {
-            yield return null;
-        }
-
-        onComplete?.Invoke();
-    }
-
     public override GameObject Find(MoveDirection x, MoveDirection y, int[,] map, out KeyValuePair<int,int> index)
     {
         var findResult = base.Find(x, y, map, out index);
@@ -121,5 +111,15 @@ public class Human : Entity
         }
 
         return null;
+    }
+
+    private IEnumerator CheckAnimationCompleted(string currentAnim, Action onComplete)
+    {
+        while (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(currentAnim))
+        {
+            yield return null;
+        }
+
+        onComplete?.Invoke();
     }
 }
