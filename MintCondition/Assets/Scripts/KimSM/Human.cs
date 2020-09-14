@@ -6,6 +6,8 @@ using UnityEngine;
 public class Human : Entity
 {
     private Animator playerAnimator;
+    private List<KeyValuePair<MoveDirection, MoveDirection>> shotDirectionList;
+    
     public bool IsPlayer;
     
     public int[,] map;
@@ -17,6 +19,7 @@ public class Human : Entity
         {
             playerAnimator = GetComponent<Animator>();
         }
+        Debug.Log("human start!!!");
     }
     
     // Update is called once per frame
@@ -27,6 +30,16 @@ public class Human : Entity
             GetMovingInput();
             GetAttackInput();
         }
+    }
+
+    public Human SetDirection(KeyValuePair<MoveDirection, MoveDirection> direction)
+    {
+        if (shotDirectionList == null)
+        {
+            shotDirectionList = new List<KeyValuePair<MoveDirection, MoveDirection>>();
+        }
+        shotDirectionList.Add(direction);
+        return this;
     }
 
     private void GetMovingInput()
@@ -92,6 +105,7 @@ public class Human : Entity
         {
             playerAnimator.SetTrigger("StartAttack");
             StartCoroutine(CheckAnimationCompleted("PlayerShot", (() => playerAnimator.SetTrigger("EndAttack"))));
+            GameManager.Instance.FiringPosInRealList.Add(new KeyValuePair<int, int>(posX,posY));
         }
     }
 
