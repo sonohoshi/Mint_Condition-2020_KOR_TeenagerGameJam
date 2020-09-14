@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour
     
     public GameObject[] Obj;
     public GameObject[,] InGameMap;
-    public int[][,] Map;
+    public int[][,] RealMap;
+    public int[][,] DreamMap;
+    public List<KeyValuePair<int, int>> FiringPosList;
 
     private int[] cameraSize;
 
@@ -36,17 +38,16 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         // 총 5개의 스테이지를 만들 것이므로 5개의 2차원 배열을 가지는 3차원 가변 배열 생성
-        Map = new int[5][,];
+        RealMap = new int[5][,];
         cameraSize = new int[5];
         // 1스테이지 맵 구조 초기화
-        Map[0] = new int[6, 9]
+        RealMap[0] = new int[5, 11]
         {
-            {1, 1, 1, 2, 1, 2, 4, 4, 4},
-            {4, 4, 1, 0, 0, 1, 4, 4, 4},
-            {4, 4, 1, 0, 0, 1, 4, 4, 4},
-            {4, 4, 1, 0, 0, 1, 4, 4, 4},
-            {4, 4, 1, 0, 0, 1, 4, 4, 4},
-            {4, 4, 1, 1, 1, 3, 1, 1, 1}
+            {4,4,1,1,1,4,4,4,4,4,4},
+            {4,4,1,4,1,4,4,4,4,4,4},
+            {1,1,1,1,2,1,1,1,1,1,1},
+            {4,4,1,4,4,4,1,4,4,4,4},
+            {4,4,1,1,1,1,3,4,4,4,4}
         };
         cameraSize[0] = 18;
         
@@ -57,13 +58,13 @@ public class GameManager : MonoBehaviour
 
     private void MapInitializing(int stage)
     {
-        int x = Map[stage].GetLength(0);
-        int y = Map[stage].Length / Map[0].GetLength(0);
+        int x = RealMap[stage].GetLength(0);
+        int y = RealMap[stage].Length / RealMap[0].GetLength(0);
         InGameMap = new GameObject[x, y];
         Camera.main.orthographicSize = cameraSize[stage];
         Debug.Log($"x:{x}, y:{y}");
         Camera.main.transform.position = new Vector3((y * tileSize) * 0.5f, (x * -2f), -10f);
         // MapGenereation 메소드에는 각 스테이지-1을 인덱싱 해서 넣어주면 됨.
-        MapGeneration(Map[stage]);
+        MapGeneration(RealMap[stage]);
     }
 }

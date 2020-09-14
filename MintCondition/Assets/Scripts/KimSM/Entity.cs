@@ -78,7 +78,7 @@ public class Entity : MonoBehaviour
         return 1;
     }
     
-    public GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
+    public virtual GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
     {
         var isNotOuted = false;
         var toPosX = posX + (int) x;
@@ -110,7 +110,7 @@ public class Entity : MonoBehaviour
         return isNotOuted ? GameManager.Instance.InGameMap[toPosX, toPosY] : null;
     }
 
-    public void Damaged()
+    public virtual void Damaged(int[,] map)
     {
         HealthPoint--;
         if (HealthPoint <= 0)

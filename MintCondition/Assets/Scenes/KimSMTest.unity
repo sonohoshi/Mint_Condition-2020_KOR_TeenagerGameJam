@@ -627,9 +627,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1898646642}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9522cfe898e1a4e4da3701d60be19bb6, type: 3}
+  m_Script: {fileID: 11500000, guid: ba22aac160d450840963533ad4eda856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  posX: 0
+  posX: 2
   posY: 0
-  HealthPoint: 3
+  HealthPoint: 0
+  IsPlayer: 1
