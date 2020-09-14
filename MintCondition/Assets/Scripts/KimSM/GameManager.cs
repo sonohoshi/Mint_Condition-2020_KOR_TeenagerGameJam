@@ -15,25 +15,7 @@ public class GameManager : MonoBehaviour
     public List<KeyValuePair<int, int>> FiringPosList;
 
     private int[] cameraSize;
-
-    void MapGeneration(int[,] map)
-    {
-        for (int i = 0; i < map.GetLength(0); i++)
-        {
-            for (int j = 0; j < map.Length/map.GetLength(0); j++)
-            {
-                /*
-                 2차원 배열에서의 좌표계와 유니티 내의 좌표계는 차이가 있기 때문에, x와 y를 서로 바꿔 준 뒤
-                 unity 안에서의 y값에 -를 곱해줍니다.
-                 */
-                InGameMap[i,j] = Instantiate(Obj[map[i, j]], new Vector3(j * tileSize, -i * tileSize, 0),Quaternion.identity);
-                if (map[i, j] == 2 || map[i, j] == 3)
-                {
-                    InGameMap[i, j].AddComponent<Entity>().SetXAndY(i, j).SetMyType(map[i, j]);
-                }
-            }
-        }
-    }
+    private Entity[] humans;
     
     void Awake()
     {
@@ -52,8 +34,28 @@ public class GameManager : MonoBehaviour
         cameraSize[0] = 18;
         
         MapInitializing(0);
+        humans = FindObjectsOfType<Entity>();
         // 모든 초기 작업이 끝난 뒤 싱글턴 인스턴스 초기화
         Instance = this;
+    }
+
+    private void MapGeneration(int[,] map)
+    {
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.Length/map.GetLength(0); j++)
+            {
+                /*
+                 2차원 배열에서의 좌표계와 유니티 내의 좌표계는 차이가 있기 때문에, x와 y를 서로 바꿔 준 뒤
+                 unity 안에서의 y값에 -를 곱해줍니다.
+                 */
+                InGameMap[i,j] = Instantiate(Obj[map[i, j]], new Vector3(j * tileSize, -i * tileSize, 0),Quaternion.identity);
+                if (map[i, j] == 2 || map[i, j] == 3)
+                {
+                    InGameMap[i, j].AddComponent<Entity>().SetXAndY(i, j).SetMyType(map[i, j]);
+                }
+            }
+        }
     }
 
     private void MapInitializing(int stage)

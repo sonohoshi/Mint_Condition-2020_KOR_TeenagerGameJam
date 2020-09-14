@@ -14,7 +14,6 @@ public class Entity : MonoBehaviour
     protected bool isMoving;
     
     public int posX, posY;
-    public int HealthPoint;
 
     private int myType;
 
@@ -78,7 +77,7 @@ public class Entity : MonoBehaviour
         return 1;
     }
     
-    public virtual GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
+    public virtual GameObject Find(MoveDirection x, MoveDirection y, int[,] map, out KeyValuePair<int,int> storeInThis)
     {
         var isNotOuted = false;
         var toPosX = posX + (int) x;
@@ -106,18 +105,16 @@ public class Entity : MonoBehaviour
             toPosX += (int) x;
             toPosY += (int) y;
         }
+        storeInThis = new KeyValuePair<int, int>(toPosX,toPosY);
 
         return isNotOuted ? GameManager.Instance.InGameMap[toPosX, toPosY] : null;
     }
 
-    public virtual void Damaged(int[,] map)
+    public virtual void Damaged(int x, int y, int[,] map)
     {
-        HealthPoint--;
-        if (HealthPoint <= 0)
-        {
-            // To-Do Something... Animation or SE, etc.
-            Destroy(gameObject);
-        }
+        map[x, y] = 1;
+        GameManager.Instance.InGameMap[x,y] = GameManager.Instance.Obj[1];
+        Destroy(gameObject);
     }
 
     public Entity SetXAndY(int x, int y)

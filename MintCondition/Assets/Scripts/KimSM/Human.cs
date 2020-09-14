@@ -25,6 +25,7 @@ public class Human : Entity
         if (IsPlayer)
         {
             GetMovingInput();
+            GetAttackInput();
         }
     }
 
@@ -49,13 +50,42 @@ public class Human : Entity
         if (Input.GetKeyUp(KeyCode.D))
         {
             moveResult = Move(MoveDirection.InPlace, MoveDirection.DownOrRight, map);
-            Find(MoveDirection.InPlace, MoveDirection.DownOrRight, map);
         }
 
         if (moveResult == 1)
         {
             playerAnimator.SetTrigger("StartMove");
             StartCoroutine(CheckAnimationCompleted("PlayerMove", (() => playerAnimator.SetTrigger("EndMove"))));
+        }
+    }
+
+    private void GetAttackInput()
+    {
+        KeyValuePair<int, int> findResult = new KeyValuePair<int, int>(-1, -1);
+        if (Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            Find(MoveDirection.UpOrLeft, MoveDirection.InPlace, map, out findResult);
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            Find(MoveDirection.InPlace, MoveDirection.UpOrLeft, map, out findResult);
+        }
+        
+        if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            Find(MoveDirection.DownOrRight, MoveDirection.InPlace, map, out findResult);
+        }
+        
+        if (Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            Find(MoveDirection.InPlace, MoveDirection.DownOrRight, map, out findResult);
+        }
+        
+        if (findResult.Key != -1)
+        {
+            playerAnimator.SetTrigger("StartAttack");
+            StartCoroutine(CheckAnimationCompleted("PlayerShot", (() => playerAnimator.SetTrigger("EndAttack"))));
         }
     }
 
@@ -81,12 +111,13 @@ public class Human : Entity
         onComplete?.Invoke();
     }
 
-    public override GameObject Find(MoveDirection x, MoveDirection y, int[,] map)
+    public override GameObject Find(MoveDirection x, MoveDirection y, int[,] map, out KeyValuePair<int,int> index)
     {
-        var findResult = base.Find(x, y, map);
+        var findResult = base.Find(x, y, map, out index);
+        
         if (findResult != null)
         {
-            findResult.GetComponent<Entity>().Damaged(map);
+            findResult.GetComponent<Entity>().Damaged(index.Key, index.Value, map);
         }
 
         return null;
