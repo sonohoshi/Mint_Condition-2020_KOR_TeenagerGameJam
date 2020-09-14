@@ -40,6 +40,9 @@ public class Human : Entity
         if (Input.GetKeyUp(KeyCode.A))
         {
             moveResult = Move(MoveDirection.InPlace, MoveDirection.UpOrLeft, map);
+            var scale = transform.localScale;
+            scale.x = -1.5f;
+            transform.localScale = scale;
         }
         
         if (Input.GetKeyUp(KeyCode.S))
@@ -50,6 +53,9 @@ public class Human : Entity
         if (Input.GetKeyUp(KeyCode.D))
         {
             moveResult = Move(MoveDirection.InPlace, MoveDirection.DownOrRight, map);
+            var scale = transform.localScale;
+            scale.x = 1.5f;
+            transform.localScale = scale;
         }
 
         if (moveResult == 1)
