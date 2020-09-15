@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
                 {
                     SubMap[i, j].GetComponent<Human>().SetIsPlayer(true).
                         SetXAndY(i, j).
-                        SetMyType(map[i, j]);
+                        SetMyType(type);
                 }
                 SubMap[i,j].SetActive(false);
                 if (map[i, j] == 2)
