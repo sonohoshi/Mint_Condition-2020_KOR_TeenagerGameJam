@@ -5,17 +5,19 @@ using UnityEngine;
 public class PrivateSceneManager : MonoBehaviour
 {
     public static PrivateSceneManager SceneManager;
-    public int nowStage;
+    public GameObject thisObj;
+    public int nowStage = 1;
     
     void Awake()
     {
-        nowStage = 1;
-        SceneManager = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    void LateUpdate()
-    {
-        
+        thisObj = GameObject.FindWithTag("SceneManager");
+        if (thisObj == null)
+        {
+            gameObject.tag = "SceneManager";
+            nowStage = 1;
+            thisObj = gameObject;
+            SceneManager = this;
+            DontDestroyOnLoad(thisObj);
+        }
     }
 }

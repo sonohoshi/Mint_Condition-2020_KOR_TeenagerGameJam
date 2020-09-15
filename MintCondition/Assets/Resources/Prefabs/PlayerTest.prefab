@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5012251270628419938}
   m_Layer: 0
   m_Name: PlayerTest
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,3 +117,5 @@ MonoBehaviour:
   posX: 2
   posY: 0
   IsPlayer: 1
+  IsGuilty: 0
+  IsGuard: 0

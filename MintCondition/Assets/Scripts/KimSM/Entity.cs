@@ -10,6 +10,8 @@ public class Entity : MonoBehaviour
     protected readonly int enemy = 3;
     protected readonly int nullPointer = 4;
     protected readonly int player = 5;
+    protected readonly int exit = 6;
+    protected readonly int guilty = 7;
     
     protected float tileSize;
     protected bool isMoving;
@@ -21,7 +23,6 @@ public class Entity : MonoBehaviour
     void Awake()
     {
         tileSize = 5f;
-        Debug.Log(tileSize);
         isMoving = false;
     }
     
@@ -62,9 +63,10 @@ public class Entity : MonoBehaviour
         
         posX = toPosX;
         posY = toPosY;
-        Debug.Log($"tilesize : {tileSize}");
 
         StartCoroutine(SmoothMove(transform, new Vector3(posY * tileSize, -posX * tileSize, 0)));
+
+        var wasType = map[posX, posY];
         
         map[posX, posY] = myType;
         GameManager.Instance.InGameMap[posX, posY] = this.gameObject;
@@ -75,7 +77,7 @@ public class Entity : MonoBehaviour
         #endif
         
         // 이동에 성공하면 1을 반환한다.
-        return 1;
+        return wasType;
     }
     
     public virtual GameObject Find(MoveDirection x, MoveDirection y, int[,] map, out KeyValuePair<int,int> storeInThis)
@@ -144,10 +146,6 @@ public class Entity : MonoBehaviour
 
     protected bool CheckIndexOutOfRangeInArray(int x, int y, int[,] map)
     {
-        #if UNITY_EDITOR
-        Debug.Log($"x : {x}, y : {y}, {map.GetLength(0)}, {map.Length / map.GetLength(0)}");
-        #endif
-        
         return (x >= 0 && x < map.GetLength(0)) && (y >= 0 && y < map.Length / map.GetLength(0));
     }
 }

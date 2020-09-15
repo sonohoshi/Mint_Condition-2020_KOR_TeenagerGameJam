@@ -25,6 +25,7 @@ public class TextTransform : MonoBehaviour
     {
         cutScene = PrivateSceneManager.SceneManager.nowStage;
         StartCoroutine(TextPractice());
+        Debug.Log(cutScene);
     }
 
     IEnumerator NormalChat(string narration, string narraitor = "- -")

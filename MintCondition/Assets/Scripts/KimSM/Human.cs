@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Human : Entity
 {
@@ -9,17 +10,26 @@ public class Human : Entity
     private List<KeyValuePair<MoveDirection, MoveDirection>> shotDirectionList;
     
     public bool IsPlayer;
+    public bool IsGuilty;
+    public bool IsGuard;
     
     public int[,] map;
 
     void Start()
     {
-        map = GameManager.Instance.RealMap[0];
+        map = GameManager.Instance.IsReal
+            ? GameManager.Instance.RealMap[PrivateSceneManager.SceneManager.nowStage - 1]
+            : GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1];
+        Debug.Log($"map : {map}");
         if (IsPlayer)
         {
             playerAnimator = GetComponent<Animator>();
         }
-        Debug.Log("human start!!!");
+
+        if (shotDirectionList != null)
+        {
+            Debug.Log($"dir : {(int) shotDirectionList[0].Key}, {(int) shotDirectionList[0].Value}");
+        }
     }
     
     // Update is called once per frame
@@ -32,7 +42,10 @@ public class Human : Entity
         }
         else
         {
-            FindMyDirection(GameManager.Instance.RealMap[0]);
+            // Fuxking Kim SM.
+            FindMyDirection(GameManager.Instance.IsReal
+                ? GameManager.Instance.RealMap[0]
+                : GameManager.Instance.DreamMap[0]);
         }
     }
 
@@ -83,7 +96,7 @@ public class Human : Entity
             transform.localScale = scale;
         }
 
-        if (moveResult == 1)
+        if (moveResult == 1 || moveResult == 6)
         {
             GameManager.Instance.DoFindAll();
             playerAnimator.SetTrigger("StartMove");
@@ -94,24 +107,29 @@ public class Human : Entity
     private void GetAttackInput()
     {
         KeyValuePair<int, int> findResult = new KeyValuePair<int, int>(-1, -1);
+        KeyValuePair<MoveDirection,MoveDirection> firingPos = new KeyValuePair<MoveDirection, MoveDirection>();
         if (Input.GetKeyUp(KeyCode.UpArrow))
         {
             Find(MoveDirection.UpOrLeft, MoveDirection.InPlace, map, out findResult);
+            firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.UpOrLeft, MoveDirection.InPlace);
         }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             Find(MoveDirection.InPlace, MoveDirection.UpOrLeft, map, out findResult);
+            firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.UpOrLeft);
         }
         
         if (Input.GetKeyUp(KeyCode.DownArrow))
         {
             Find(MoveDirection.DownOrRight, MoveDirection.InPlace, map, out findResult);
+            firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.DownOrRight, MoveDirection.InPlace);
         }
         
         if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             Find(MoveDirection.InPlace, MoveDirection.DownOrRight, map, out findResult);
+            firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.DownOrRight);
         }
         
         if (findResult.Key != -1)
@@ -119,7 +137,18 @@ public class Human : Entity
             GameManager.Instance.DoFindAll();
             playerAnimator.SetTrigger("StartAttack");
             StartCoroutine(CheckAnimationCompleted("PlayerShot", (() => playerAnimator.SetTrigger("EndAttack"))));
-            GameManager.Instance.FiringPosInRealList.Add(new KeyValuePair<int, int>(posX,posY));
+            if (GameManager.Instance.IsReal)
+            {
+                var guiltyObj = Instantiate(GameManager.Instance.Obj[7], new Vector3(posY * tileSize, -posX * tileSize, 0),
+                    Quaternion.identity);
+                GameManager.Instance.SubMap[posX,posY] = guiltyObj.GetComponent<Human>().SetIsGuilty(true).
+                    SetDirection(firingPos).
+                    SetMyType(7).
+                    SetXAndY(posX,posY).
+                    gameObject;
+                GameManager.Instance.SubMap[posX,posY].SetActive(false);
+                GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1][posX, posY] = 7;
+            }
         }
     }
 
@@ -132,6 +161,16 @@ public class Human : Entity
             var boxY = (int) y + posY;
             GameManager.Instance.InGameMap[boxX, boxY].GetComponent<Entity>().Move(x, y, map);
         }
+
+        if (moveResult == exit && !GameManager.Instance.IsReal)
+        {
+            PrivateSceneManager.SceneManager.nowStage++;
+            SceneManager.LoadScene("IMGCutScene");
+        }
+        else if (moveResult == exit && GameManager.Instance.IsReal)
+        {
+            GameManager.Instance.LoadDream();
+        }
         return moveResult;
     }
 
@@ -141,7 +180,6 @@ public class Human : Entity
         
         if (findResult != null)
         {
-            Debug.Log($"총 맞은 놈 : {index.Key}, {index.Value}");
             findResult.GetComponent<Entity>().Damaged(index.Key, index.Value, map);
         }
 
@@ -152,7 +190,7 @@ public class Human : Entity
     {
         if (!IsPlayer)
         {
-            GameManager.Instance.humans.Remove(this);
+            GameManager.Instance.GuardArray.Remove(this);
         }
         base.Damaged(x, y, map);
     }
@@ -160,6 +198,18 @@ public class Human : Entity
     public Human SetIsPlayer(bool isPlr)
     {
         IsPlayer = isPlr;
+        return this;
+    }
+
+    public Human SetIsGuard(bool isGrd)
+    {
+        IsGuard = isGrd;
+        return this;
+    }
+
+    public Human SetIsGuilty(bool isGlt)
+    {
+        IsGuilty = isGlt;
         return this;
     }
 
@@ -171,5 +221,10 @@ public class Human : Entity
         }
 
         onComplete?.Invoke();
+    }
+
+    private void UpdateMap()
+    {
+        map = GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1];
     }
 }
