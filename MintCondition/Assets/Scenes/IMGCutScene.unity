@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e375f758400eb624e8e9cbad1f95736a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nowStage: 1
+  nowStage: 0
 --- !u!4 &302682059
 Transform:
   m_ObjectHideFlags: 0
@@ -658,9 +658,11 @@ MonoBehaviour:
   textSound: {fileID: 8300000, guid: 92b8f2fc6058aa54c912550d50665be4, type: 3}
   backGround: {fileID: 2143106296}
   cut1Image:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: a98a61146ce294945a00b065f40a9404, type: 3}
+  - {fileID: 21300000, guid: afa362f420012264bb915446100045fd, type: 3}
+  - {fileID: 21300000, guid: 45fd3d39e231b3247b178bdb50601588, type: 3}
+  - {fileID: 21300000, guid: 7164caa6f2c85ce4dabb3fe416c4c800, type: 3}
+  - {fileID: 21300000, guid: 34230d82e4584ae4db31868f153cf771, type: 3}
   cut2Image:
   - {fileID: 0}
   - {fileID: 0}

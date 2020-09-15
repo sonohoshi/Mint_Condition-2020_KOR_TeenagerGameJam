@@ -76,7 +76,6 @@ public class TextTransform : MonoBehaviour
             backGround.sprite = cut1Image[4];
             yield return StartCoroutine(NormalChat("그런 날들이 오늘도 시작된다."));
             yield return new WaitForSeconds(1.5f);
-            cutScene++;
             SceneManager.LoadScene("Stage_1");
             // Scene 이동
         }
@@ -125,7 +124,6 @@ public class TextTransform : MonoBehaviour
             yield return StartCoroutine(NormalChat("오늘 잠자리도 사납겠구나..."));
             yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene("Stage_2");
-            cutScene++;
         }
         if(cutScene == 3)
         {
@@ -163,7 +161,6 @@ public class TextTransform : MonoBehaviour
             yield return StartCoroutine(NormalChat("타겟이 아닌 거대 기업 데니로 향한다."));
             yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene("Stage_3");
-            cutScene++;
         }
         if(cutScene == 4)
         {
@@ -220,7 +217,6 @@ public class TextTransform : MonoBehaviour
             yield return StartCoroutine(NormalChat("\"이게 내가아는 전부야, 용서해줘 젠장!\"", "-사장-"));
             yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene("Stage_4");
-            cutScene++;
         }
         if (cutScene == 5)
         {

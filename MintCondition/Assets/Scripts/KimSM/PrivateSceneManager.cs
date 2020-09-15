@@ -9,7 +9,7 @@ public class PrivateSceneManager : MonoBehaviour
     
     void Awake()
     {
-        nowStage = 2;
+        nowStage = 1;
         SceneManager = this;
         DontDestroyOnLoad(gameObject);
     }

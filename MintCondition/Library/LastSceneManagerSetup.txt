@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/IMGCutScene.unity
+- path: Assets/Scenes/KimSMTest.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
