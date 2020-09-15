@@ -48,9 +48,10 @@ public class Human : Entity
 
     public void FindMyDirection(int [,] map)
     {
+        var keyValuePair = new KeyValuePair<int,int>(-1,-1);
         var x = shotDirectionList[0].Key;
         var y = shotDirectionList[0].Value;
-        Debug.Log($"{gameObject.name} "+ Find(x, y, map, out var keyValuePair));
+        Debug.Log($"{gameObject.name} "+ Find(x, y, map, out keyValuePair));
     }
 
     private void GetMovingInput()

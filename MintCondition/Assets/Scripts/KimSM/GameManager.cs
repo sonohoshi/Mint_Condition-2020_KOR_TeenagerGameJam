@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         cameraSize[0] = 18;
         
         MapInitializing(0);
-        nowStage = 0;
+        nowStage = PrivateSceneManager.SceneManager.nowStage;
         
         foreach (var human in FindObjectsOfType<Human>())
         {

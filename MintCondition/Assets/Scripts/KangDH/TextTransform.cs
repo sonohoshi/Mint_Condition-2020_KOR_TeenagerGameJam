@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TextTransform : MonoBehaviour
@@ -15,13 +16,14 @@ public class TextTransform : MonoBehaviour
     public AudioClip textSound;
 
     public Image backGround;
-    public Sprite cut1Image;
-    public Sprite cut2Image;
-    public Sprite cut3Image;
-    public Sprite cut4Image;
-    public Sprite endingImage;
+    public Sprite[] cut1Image;
+    public Sprite[] cut2Image;
+    public Sprite[] cut3Image;
+    public Sprite[] cut4Image;
+    public Sprite[] endingImage;
     void Start()
     {
+        cutScene = PrivateSceneManager.SceneManager.nowStage;
         StartCoroutine(TextPractice());
     }
 
@@ -53,25 +55,29 @@ public class TextTransform : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (cutScene == 1)
         {
-            backGround.sprite = cut1Image;
+            backGround.sprite = cut1Image[0];
             yield return StartCoroutine(NormalChat("나는 X, 데니의 암살자다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut1Image[1];
             yield return StartCoroutine(NormalChat("세계는 매우 혼란한 상태다."));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("나는 혼란한 세계를 진정시키기 위해"));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut1Image[2];
             yield return StartCoroutine(NormalChat("많은 사람들의 목숨을 지키기 위해"));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut1Image[3];
             yield return StartCoroutine(NormalChat("이 모든 일을 끝내고 편해지기 위해"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("하루하루 죄책감과 함께"));
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("암살자로써의 생활을 이어나가고 있다."));
-
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut1Image[4];
             yield return StartCoroutine(NormalChat("그런 날들이 오늘도 시작된다."));
             yield return new WaitForSeconds(1.5f);
             cutScene++;
+            SceneManager.LoadScene("Stage_1");
             // Scene 이동
         }
         if(cutScene == 2)
@@ -81,19 +87,22 @@ public class TextTransform : MonoBehaviour
 "허억..허억.."/"ㅈ..잠깐만!"/타겟인 그가 말을 걸었다/"만약 네놈이 데니의 암살자라면, 네가 알고있는 것은 거짓이야!"/
 무슨 이야기를 하는거지?/"너는 세계 평화를 위해서도, 사람들의 목숨을 지키기 위해서 싸우는 것도 아니야!"/"
 너는 그저 어릴 적 거둬들여져 그들에게 세뇌당한거야!!!"/.../임무 완수를 위해 그를 죽였다*/
-            backGround.sprite = cut2Image;
+            backGround.sprite = cut2Image[0];
             yield return StartCoroutine(NormalChat("\"허억..허억..\"","-적1-"));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut2Image[1];
             yield return StartCoroutine(NormalChat("\"ㅈ..잠깐만!\"","-적1-"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("타겟인 그가 말을 걸었다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut2Image[2];
             yield return StartCoroutine(NormalChat("\"만약 네놈이 데니의 암살자라면, \"","-적1-"));
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("\"네가 알고있는 것은 거짓이야!\"", "-적1-"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("\"무슨 이야기를 하는거지?\"","\"X\""));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut2Image[3];
             yield return StartCoroutine(NormalChat("\"너는 세계 평화를 위해서도, \"","\"적1\""));
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("\"사람들의 목숨을 지키기 위해서 \"", "\"적1\""));
@@ -106,10 +115,16 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("\"거둬들여져 그들에게 세뇌당한거야!!!\"", "-적1-"));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut2Image[4];
             yield return StartCoroutine(NormalChat("\"...\"","\"X\""));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("임무 완수를 위해 그를 죽였다."));
             yield return new WaitForSeconds(1.0f);
+            yield return StartCoroutine(NormalChat("..."));
+            yield return new WaitForSeconds(.3f);
+            yield return StartCoroutine(NormalChat("오늘 잠자리도 사납겠구나..."));
+            yield return new WaitForSeconds(1.0f);
+            SceneManager.LoadScene("Stage_2");
             cutScene++;
         }
         if(cutScene == 3)
@@ -122,7 +137,7 @@ public class TextTransform : MonoBehaviour
 무엇보다 나는 이 지긋지긋한 일을 그만두고 싶다/나의 모든 것을 꿰뚫고 이용하는 그들의 족쇄에서 벗어나고싶다/
 다음날 나는, 타겟이 아닌 거대 기업 데니로 향한다
 */
-            backGround.sprite = cut3Image;
+            backGround.sprite = cut3Image[0];
             yield return StartCoroutine(NormalChat("\"허억..허억...\"","X"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("어느 때와 같이 "));
@@ -147,6 +162,7 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("타겟이 아닌 거대 기업 데니로 향한다."));
             yield return new WaitForSeconds(1.0f);
+            SceneManager.LoadScene("Stage_3");
             cutScene++;
         }
         if(cutScene == 4)
@@ -162,7 +178,7 @@ public class TextTransform : MonoBehaviour
  "데니가 돈을 벌지 못하게 방해하는 자들을 없애는게 니가 해왔던 임무야"/
 "그게 어떤 단체든, 군대든, 국가든말이야"/"이게 내가아는 전부야, 용서해줘 젠장"
 */
-            backGround.sprite = cut4Image;
+            backGround.sprite = cut4Image[0];
             yield return StartCoroutine(NormalChat("\"X!!\"", "-사장-"));
             yield return new WaitForSeconds(0.8f);
             yield return StartCoroutine(NormalChat("무슨 짓이야!", "-사장-"));
@@ -203,6 +219,7 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("\"이게 내가아는 전부야, 용서해줘 젠장!\"", "-사장-"));
             yield return new WaitForSeconds(1.0f);
+            SceneManager.LoadScene("Stage_4");
             cutScene++;
         }
         if (cutScene == 5)
@@ -214,7 +231,7 @@ public class TextTransform : MonoBehaviour
  더럽고 피비린내 세계와 등지고 걸어나간다/밝은 곳을 향해 걸어간다/
  나는 X다
  */
-            backGround.sprite = endingImage;
+            backGround.sprite = endingImage[0];
             yield return StartCoroutine(NormalChat("끝났다."));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("몇십년간 도구로써 사용되었던 나는,"));
