@@ -30,6 +30,10 @@ public class Human : Entity
             GetMovingInput();
             GetAttackInput();
         }
+        else
+        {
+            FindMyDirection(GameManager.Instance.RealMap[0]);
+        }
     }
 
     public Human SetDirection(KeyValuePair<MoveDirection, MoveDirection> direction)
@@ -40,6 +44,13 @@ public class Human : Entity
         }
         shotDirectionList.Add(direction);
         return this;
+    }
+
+    public void FindMyDirection(int [,] map)
+    {
+        var x = shotDirectionList[0].Key;
+        var y = shotDirectionList[0].Value;
+        Debug.Log($"{gameObject.name} "+ Find(x, y, map, out var keyValuePair));
     }
 
     private void GetMovingInput()
@@ -73,6 +84,7 @@ public class Human : Entity
 
         if (moveResult == 1)
         {
+            GameManager.Instance.DoFindAll();
             playerAnimator.SetTrigger("StartMove");
             StartCoroutine(CheckAnimationCompleted("PlayerMove", (() => playerAnimator.SetTrigger("EndMove"))));
         }
@@ -103,6 +115,7 @@ public class Human : Entity
         
         if (findResult.Key != -1)
         {
+            GameManager.Instance.DoFindAll();
             playerAnimator.SetTrigger("StartAttack");
             StartCoroutine(CheckAnimationCompleted("PlayerShot", (() => playerAnimator.SetTrigger("EndAttack"))));
             GameManager.Instance.FiringPosInRealList.Add(new KeyValuePair<int, int>(posX,posY));
@@ -127,10 +140,26 @@ public class Human : Entity
         
         if (findResult != null)
         {
+            Debug.Log($"총 맞은 놈 : {index.Key}, {index.Value}");
             findResult.GetComponent<Entity>().Damaged(index.Key, index.Value, map);
         }
 
         return null;
+    }
+
+    public override void Damaged(int x, int y, int[,] map)
+    {
+        if (!IsPlayer)
+        {
+            GameManager.Instance.humans.Remove(this);
+        }
+        base.Damaged(x, y, map);
+    }
+
+    public Human SetIsPlayer(bool isPlr)
+    {
+        IsPlayer = isPlr;
+        return this;
     }
 
     private IEnumerator CheckAnimationCompleted(string currentAnim, Action onComplete)

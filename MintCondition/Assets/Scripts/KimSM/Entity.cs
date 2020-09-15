@@ -9,6 +9,7 @@ public class Entity : MonoBehaviour
     protected readonly int box = 2;
     protected readonly int enemy = 3;
     protected readonly int nullPointer = 4;
+    protected readonly int player = 5;
     
     protected float tileSize;
     protected bool isMoving;
@@ -91,7 +92,7 @@ public class Entity : MonoBehaviour
         // 배열의 범위를 벗어나지 않고 다음 확인할 수 있는 칸이 지나갈 수 있는 길일 때만 반복
         while(isNotOuted = CheckIndexOutOfRangeInArray(toPosX, toPosY, map))
         {
-            if (map[toPosX,toPosY] == box || map[toPosX,toPosY] == enemy)
+            if (map[toPosX,toPosY] == box || map[toPosX,toPosY] == enemy || map[toPosX,toPosY] == player)
             {
                 break;
             }

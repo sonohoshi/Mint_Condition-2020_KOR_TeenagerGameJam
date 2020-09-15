@@ -14,9 +14,10 @@ public class GameManager : MonoBehaviour
     public int[][,] RealMap;
     public int[][,] DreamMap;
     public List<KeyValuePair<int, int>> FiringPosInRealList;
+    public List<Human> humans;
 
     private int[] cameraSize;
-    private Human[] humans;
+    private int nowStage;
 
     void Awake()
     {
@@ -38,8 +39,13 @@ public class GameManager : MonoBehaviour
         cameraSize[0] = 18;
         
         MapInitializing(0);
-        humans = FindObjectsOfType<Human>();
-        Debug.Log(humans.Length);
+        nowStage = 0;
+        
+        foreach (var human in FindObjectsOfType<Human>())
+        {
+            humans.Add(human);
+        }
+
         // 모든 초기 작업이 끝난 뒤 싱글턴 인스턴스 초기화
         Instance = this;
         Debug.Log(Instance);
@@ -53,6 +59,8 @@ public class GameManager : MonoBehaviour
             {
                 continue;
             }
+            
+            guard.FindMyDirection(RealMap[nowStage]);
         }
     }
 
@@ -80,11 +88,17 @@ public class GameManager : MonoBehaviour
                     {
                         var one = (Entity.MoveDirection) int.Parse(dir.Split('_')[0]);
                         var two = (Entity.MoveDirection) int.Parse(dir.Split('_')[1]);
-                        Debug.Log($"{one}, {two}");
                         InGameMap[i, j].GetComponent<Human>().SetDirection(new KeyValuePair<Entity.MoveDirection, Entity.MoveDirection>(one,two)).
                             SetXAndY(i, j).
                             SetMyType(map[i, j]);
                     }
+                }
+
+                if (map[i, j] == 5)
+                {
+                    InGameMap[i, j].GetComponent<Human>().SetIsPlayer(true).
+                        SetXAndY(i, j).
+                        SetMyType(map[i, j]);
                 }
             }
         }
