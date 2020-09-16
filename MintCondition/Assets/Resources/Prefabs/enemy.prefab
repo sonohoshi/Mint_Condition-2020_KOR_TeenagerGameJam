@@ -97,5 +97,10 @@ MonoBehaviour:
   posX: 2
   posY: 1
   IsPlayer: 0
-  IsGuilty: 1
+  IsGuilty: 0
   IsGuard: 0
+  directionSprites:
+  - {fileID: 21300000, guid: 42539d59aa4a65d46af2099cb28dbf00, type: 3}
+  - {fileID: 21300000, guid: 1d402365990cf0149bff97611b9841db, type: 3}
+  - {fileID: 21300000, guid: 225533bae819f934e9e13526dfbd06c7, type: 3}
+  - {fileID: 21300000, guid: 536de42dad2332045a485ff72973446d, type: 3}

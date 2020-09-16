@@ -13,7 +13,8 @@ public class Human : Entity
     public bool IsPlayer;
     public bool IsGuilty;
     public bool IsGuard;
-    
+
+    public Sprite[] directionSprites;
     public int[,] map;
 
     void Start()
@@ -49,6 +50,28 @@ public class Human : Entity
             shotDirectionList = new List<KeyValuePair<MoveDirection, MoveDirection>>();
         }
         shotDirectionList.Add(direction);
+        
+        if (shotDirectionList[0].Key == MoveDirection.DownOrRight &&
+            shotDirectionList[0].Value == MoveDirection.InPlace)
+        {
+            GetComponent<SpriteRenderer>().sprite = directionSprites[0];
+        }
+        else if (shotDirectionList[0].Key == MoveDirection.InPlace &&
+                 shotDirectionList[0].Value == MoveDirection.UpOrLeft)
+        {
+            GetComponent<SpriteRenderer>().sprite = directionSprites[1];
+        }
+        else if (shotDirectionList[0].Key == MoveDirection.InPlace &&
+                 shotDirectionList[0].Value == MoveDirection.DownOrRight)
+        {
+            GetComponent<SpriteRenderer>().sprite = directionSprites[2];
+        }
+        else if (shotDirectionList[0].Key == MoveDirection.UpOrLeft &&
+                  shotDirectionList[0].Value == MoveDirection.InPlace)
+        {
+            GetComponent<SpriteRenderer>().sprite = directionSprites[3];
+        }
+        
         return this;
     }
 
