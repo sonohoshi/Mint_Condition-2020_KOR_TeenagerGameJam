@@ -234,6 +234,7 @@ public class Human : Entity
         }
         else if (moveResult == exit && GameManager.Instance.IsReal)
         {
+            bullet = 0;
             GameManager.Instance.LoadDream();
         }
         return moveResult;
