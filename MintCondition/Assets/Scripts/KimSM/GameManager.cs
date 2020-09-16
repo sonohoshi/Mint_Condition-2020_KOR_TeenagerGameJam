@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
             {4,4,1,4,1,4,4,4,4,4,4},
             {6,1,1,1,2,1,1,1,1,1,5},
             {4,4,1,4,4,4,1,4,4,4,4},
-            {4,4,1,1,1,1,3,4,4,4,4}
+            {4,4,1,1,1,1,1,4,4,4,4}
         };
         RealMap[1] = new int[7,5]
         {
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
             {4,4,1,1,4},
             {1,1,1,4,4},
             {1,4,1,4,4},
-            {3,1,1,1,5}
+            {1,1,1,1,5}
         };
 
         cameraSize[0] = 18;
@@ -133,6 +133,10 @@ public class GameManager : MonoBehaviour
                 {
                     type = 5;
                 }
+                else if (type == 3)
+                {
+                    type = 1;
+                }
                 SubMap[i,j] = Instantiate(Obj[type], new Vector3(j * tileSize, -i * tileSize, 0),Quaternion.identity);
                 if (type == 5)
                 {
@@ -158,10 +162,10 @@ public class GameManager : MonoBehaviour
                             SetIsGuard(true).
                             SetXAndY(i, j).
                             SetMyType(map[i, j]);
-                        SubMap[i, j].GetComponent<Human>().SetDirection(new KeyValuePair<Entity.MoveDirection, Entity.MoveDirection>(one,two)).
+                        /*SubMap[i, j].GetComponent<Human>().SetDirection(new KeyValuePair<Entity.MoveDirection, Entity.MoveDirection>(one,two)).
                             SetIsGuard(true).
                             SetXAndY(i, j).
-                            SetMyType(map[i, j]);
+                            SetMyType(map[i, j]);*/
                     }
                 }
 

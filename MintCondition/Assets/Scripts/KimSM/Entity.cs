@@ -67,8 +67,12 @@ public class Entity : MonoBehaviour
         StartCoroutine(SmoothMove(transform, new Vector3(posY * tileSize, -posX * tileSize, 0)));
 
         var wasType = map[posX, posY];
+
+        if (wasType != 6)
+        {
+            map[posX, posY] = myType;
+        }
         
-        map[posX, posY] = myType;
         GameManager.Instance.InGameMap[posX, posY] = this.gameObject;
 
         #if UNITY_EDITOR
