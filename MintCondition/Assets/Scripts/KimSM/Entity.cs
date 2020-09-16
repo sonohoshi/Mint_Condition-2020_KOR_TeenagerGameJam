@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour
     
     protected float tileSize;
     protected bool isMoving;
+    protected bool wasExit;
     
     public int posX, posY;
 
@@ -24,6 +25,7 @@ public class Entity : MonoBehaviour
     {
         tileSize = 5f;
         isMoving = false;
+        wasExit = false;
     }
     
     // Move 메소드에 각 값을 넣으면 됨.
@@ -68,11 +70,14 @@ public class Entity : MonoBehaviour
 
         var wasType = map[posX, posY];
 
-        if (wasType != 6)
+        Debug.Log($"{gameObject.name} : was : {wasType}");
+        if (wasType == 6)
         {
-            map[posX, posY] = myType;
+            wasExit = true;
         }
         
+        map[posX, posY] = myType;
+
         GameManager.Instance.InGameMap[posX, posY] = this.gameObject;
 
         #if UNITY_EDITOR
@@ -121,7 +126,7 @@ public class Entity : MonoBehaviour
     {
         map[x, y] = 1;
         GameManager.Instance.InGameMap[x,y] = GameManager.Instance.Obj[1];
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     public Entity SetXAndY(int x, int y)

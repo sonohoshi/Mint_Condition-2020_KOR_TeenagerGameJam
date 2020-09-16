@@ -191,6 +191,8 @@ public class Human : Entity
     public override void Damaged(int x, int y, int[,] map)
     {
         base.Damaged(x, y, map);
+        Debug.Log($"human damaged {x}, {y}");
+        Destroy(gameObject);
     }
 
     public Human SetIsPlayer(bool isPlr)
