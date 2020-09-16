@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] Obj;
     public GameObject[,] InGameMap;
     public GameObject[,] SubMap;
+    public int[] MaxBullets;
     public int[][,] RealMap;
     public int[][,] DreamMap;
     public List<KeyValuePair<int, int>> FiringPosInRealList;
@@ -23,11 +24,12 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         FiringPosInRealList = new List<KeyValuePair<int, int>>();
-
+        MaxBullets = new int[4] {1, 1, 2, 1};
+        
         // 총 5개의 스테이지를 만들 것이므로 5개의 2차원 배열을 가지는 3차원 가변 배열 생성
-        RealMap = new int[5][,];
-        DreamMap = new int[5][,];
-        cameraSize = new int[5];
+        RealMap = new int[4][,];
+        DreamMap = new int[4][,];
+        cameraSize = new int[4];
         // 1스테이지 맵 구조 초기화
         RealMap[0] = new int[5, 11]
         {

@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour
     
     protected float tileSize;
     protected bool isMoving;
+    protected bool isAnimating;
     protected bool wasExit;
     
     public int posX, posY;
@@ -25,6 +26,7 @@ public class Entity : MonoBehaviour
     {
         tileSize = 5f;
         isMoving = false;
+        isAnimating = false;
         wasExit = false;
     }
     
@@ -38,7 +40,8 @@ public class Entity : MonoBehaviour
 
     public virtual int Move(MoveDirection x, MoveDirection y, int [,] map)
     {
-        if (isMoving)
+        Debug.Log($"moving : {isMoving}, ani : {isAnimating}");
+        if (isMoving || isAnimating)
         {
             return 0;
         }
@@ -49,7 +52,7 @@ public class Entity : MonoBehaviour
         if (!CheckIndexOutOfRangeInArray(toPosX, toPosY, map))
         {
             return 0;
-        } 
+        }
 
         // 경비병이나 상자 등에 의해 막혔을 경우, 왜 막혔는지를 확인하기 위해 진로를 가로막은 오브젝트의 종류를 반환한다.
         if (map[toPosX, toPosY] == wall || map[toPosX, toPosY] == box || map[toPosX, toPosY] == enemy || map[toPosX, toPosY] == nullPointer)
@@ -144,7 +147,7 @@ public class Entity : MonoBehaviour
 
     protected IEnumerator SmoothMove(Transform original, Vector3 moveTo)
     {
-        for (float time = 0; time <= 1f; time += 0.1f)
+        for (float time = 0; time <= 1f; time += 0.2f)
         {
             original.position = Vector3.Lerp(original.position, moveTo, time);
             yield return new WaitForSeconds(.1f);

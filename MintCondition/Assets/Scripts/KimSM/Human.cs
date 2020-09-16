@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Human : Entity
 {
+    private bool isFinding;
+    private int bullet;
     private int moveCount;
     private Animator playerAnimator;
     private List<KeyValuePair<MoveDirection, MoveDirection>> shotDirectionList;
@@ -19,19 +21,17 @@ public class Human : Entity
 
     void Start()
     {
+        isFinding = false;
         moveCount = 0;
         map = GameManager.Instance.IsReal
             ? GameManager.Instance.RealMap[PrivateSceneManager.SceneManager.nowStage - 1]
             : GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1];
-        Debug.Log($"map : {map}");
+        
         if (IsPlayer)
         {
             playerAnimator = GetComponent<Animator>();
-        }
-
-        if (shotDirectionList != null)
-        {
-            Debug.Log($"dir : {(int) shotDirectionList[0].Key}, {(int) shotDirectionList[0].Value}");
+            bullet = GameManager.Instance.MaxBullets[PrivateSceneManager.SceneManager.nowStage - 1];
+            Debug.Log($"bullet : {bullet}");
         }
     }
     
@@ -85,6 +85,10 @@ public class Human : Entity
 
     private void GetMovingInput()
     {
+        if (isFinding)
+        {
+            return;
+        }
         int moveResult = 0;
         if (Input.GetKeyUp(KeyCode.W))
         {
@@ -112,8 +116,20 @@ public class Human : Entity
             transform.localScale = scale;
         }
 
+        if (moveResult == 2)
+        {
+            isAnimating = true;
+            playerAnimator.SetTrigger("StartKick");
+            StartCoroutine(CheckAnimationCompleted("PlayerKick", (() =>
+            {
+                playerAnimator.SetTrigger("EndKick");
+                isAnimating = false;
+            })));
+        }
+
         if (moveResult == 1 || moveResult == 6)
         {
+            isAnimating = true;
             moveCount++;
             Debug.Log($"move : {moveCount}");
             var turn3 = moveCount == 3;
@@ -121,6 +137,7 @@ public class Human : Entity
             StartCoroutine(CheckAnimationCompleted("PlayerMove", (() =>
             {
                 playerAnimator.SetTrigger("EndMove");
+                isAnimating = false;
                 GameManager.Instance.DoFindAll(turn3);
                 if (turn3)
                 {
@@ -128,10 +145,21 @@ public class Human : Entity
                 }
             })));
         }
+
+        if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") && !isMoving)
+        {
+            playerAnimator.SetTrigger("EndMove");
+            playerAnimator.SetTrigger("EndKick");
+        }
     }
 
     private void GetAttackInput()
     {
+        if (isFinding || bullet <= 0)
+        {
+            return;
+        }
+
         KeyValuePair<int, int> findResult = new KeyValuePair<int, int>(-1, -1);
         KeyValuePair<MoveDirection,MoveDirection> firingPos = new KeyValuePair<MoveDirection, MoveDirection>();
         if (Input.GetKeyUp(KeyCode.UpArrow))
@@ -157,11 +185,18 @@ public class Human : Entity
             Find(MoveDirection.InPlace, MoveDirection.DownOrRight, map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.DownOrRight);
         }
-        
+
         if (findResult.Key != -1)
         {
+            bullet--;
+            isFinding = true;
             playerAnimator.SetTrigger("StartAttack");
-            StartCoroutine(CheckAnimationCompleted("PlayerShot", (() => playerAnimator.SetTrigger("EndAttack"))));
+            StartCoroutine(CheckAnimationCompleted("PlayerShot", (() =>
+            {
+                playerAnimator.SetTrigger("EndAttack");
+                isFinding = false;
+            })));
+            
             if (GameManager.Instance.IsReal)
             {
                 var guiltyObj = Instantiate(GameManager.Instance.Obj[7], new Vector3(posY * tileSize, -posX * tileSize, 0),
@@ -174,6 +209,11 @@ public class Human : Entity
                 GameManager.Instance.SubMap[posX,posY].SetActive(false);
                 GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1][posX, posY] = 7;
             }
+        }
+
+        if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") && !isFinding)
+        {
+            playerAnimator.SetTrigger("EndAttack");
         }
     }
 
