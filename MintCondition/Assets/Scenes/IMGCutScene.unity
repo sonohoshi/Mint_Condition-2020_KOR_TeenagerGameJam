@@ -665,9 +665,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7164caa6f2c85ce4dabb3fe416c4c800, type: 3}
   - {fileID: 21300000, guid: 34230d82e4584ae4db31868f153cf771, type: 3}
   cut2Image:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: ac9cc68afbcec554993cf95ec05b5f61, type: 3}
+  - {fileID: 21300000, guid: 5f8c277320da8544aaf343009d01c7f5, type: 3}
+  - {fileID: 21300000, guid: c4fbc3c61f09d5849811886436769f91, type: 3}
+  - {fileID: 21300000, guid: 57bafca26576d574880a383a07a29ae1, type: 3}
+  - {fileID: 21300000, guid: 4f5cea30547f83e408d89421a9faffc2, type: 3}
   cut3Image:
   - {fileID: 0}
   cut4Image:

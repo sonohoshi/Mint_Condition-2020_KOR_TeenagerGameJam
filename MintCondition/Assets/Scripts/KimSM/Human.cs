@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Human : Entity
 {
+    private int moveCount;
     private Animator playerAnimator;
     private List<KeyValuePair<MoveDirection, MoveDirection>> shotDirectionList;
     
@@ -17,6 +18,7 @@ public class Human : Entity
 
     void Start()
     {
+        moveCount = 0;
         map = GameManager.Instance.IsReal
             ? GameManager.Instance.RealMap[PrivateSceneManager.SceneManager.nowStage - 1]
             : GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1];
@@ -35,18 +37,9 @@ public class Human : Entity
     // Update is called once per frame
     void Update()
     {
-        if (IsPlayer)
-        {
-            GetMovingInput();
-            GetAttackInput();
-        }
-        else
-        {
-            // Fuxking Kim SM.
-            FindMyDirection(GameManager.Instance.IsReal
-                ? GameManager.Instance.RealMap[0]
-                : GameManager.Instance.DreamMap[0]);
-        }
+        if (!IsPlayer) return;
+        GetMovingInput();
+        GetAttackInput();
     }
 
     public Human SetDirection(KeyValuePair<MoveDirection, MoveDirection> direction)
@@ -98,9 +91,19 @@ public class Human : Entity
 
         if (moveResult == 1 || moveResult == 6)
         {
-            GameManager.Instance.DoFindAll();
+            moveCount++;
+            Debug.Log($"move : {moveCount}");
+            var turn3 = moveCount == 3;
             playerAnimator.SetTrigger("StartMove");
-            StartCoroutine(CheckAnimationCompleted("PlayerMove", (() => playerAnimator.SetTrigger("EndMove"))));
+            StartCoroutine(CheckAnimationCompleted("PlayerMove", (() =>
+            {
+                playerAnimator.SetTrigger("EndMove");
+                GameManager.Instance.DoFindAll(turn3);
+                if (turn3)
+                {
+                    moveCount = 0;
+                }
+            })));
         }
     }
 
@@ -134,7 +137,6 @@ public class Human : Entity
         
         if (findResult.Key != -1)
         {
-            GameManager.Instance.DoFindAll();
             playerAnimator.SetTrigger("StartAttack");
             StartCoroutine(CheckAnimationCompleted("PlayerShot", (() => playerAnimator.SetTrigger("EndAttack"))));
             if (GameManager.Instance.IsReal)
@@ -188,28 +190,27 @@ public class Human : Entity
 
     public override void Damaged(int x, int y, int[,] map)
     {
-        if (!IsPlayer)
-        {
-            GameManager.Instance.GuardArray.Remove(this);
-        }
         base.Damaged(x, y, map);
     }
 
     public Human SetIsPlayer(bool isPlr)
     {
         IsPlayer = isPlr;
+        IsGuard = IsGuilty = false;
         return this;
     }
 
     public Human SetIsGuard(bool isGrd)
     {
         IsGuard = isGrd;
+        IsPlayer = IsGuilty = false;
         return this;
     }
 
     public Human SetIsGuilty(bool isGlt)
     {
         IsGuilty = isGlt;
+        IsPlayer = IsGuard = false;
         return this;
     }
 

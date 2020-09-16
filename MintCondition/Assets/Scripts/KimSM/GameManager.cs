@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     public int[][,] RealMap;
     public int[][,] DreamMap;
     public List<KeyValuePair<int, int>> FiringPosInRealList;
-    public List<Human> GuardArray;
     public bool IsReal = true;
 
     private int[] cameraSize;
@@ -45,32 +44,54 @@ public class GameManager : MonoBehaviour
             {6,1,1,1,2,1,1,1,1,1,5},
             {4,4,1,4,4,4,1,4,4,4,4},
             {4,4,1,1,1,1,3,4,4,4,4}
-        }; 
+        };
+        RealMap[1] = new int[7,5]
+        {
+            {5,1,1,4,4},
+            {4,4,1,1,4},
+            {4,1,1,4,4},
+            {4,4,1,1,4},
+            {1,1,1,4,4},
+            {1,4,1,4,4},
+            {3,1,1,1,6}
+        };
+        DreamMap[1] = new int[7,5]
+        {
+            {6,1,1,4,4},
+            {4,4,1,1,4},
+            {4,1,1,4,4},
+            {4,4,1,1,4},
+            {1,1,1,4,4},
+            {1,4,1,4,4},
+            {3,1,1,1,5}
+        };
 
         cameraSize[0] = 18;
+        cameraSize[1] = 20;
         
-        MapInitializing(0, IsReal);
         nowStage = PrivateSceneManager.SceneManager.nowStage - 1;
-        
-        foreach (var human in FindObjectsOfType<Human>())
-        {
-            GuardArray.Add(human);
-        }
+        MapInitializing(nowStage, IsReal);
 
         // 모든 초기 작업이 끝난 뒤 싱글턴 인스턴스 초기화
         Instance = this;
         Debug.Log(Instance);
     }
 
-    public void DoFindAll()
+    public void DoFindAll(bool withGuilty)
     {
-        foreach (var guard in GuardArray)
+        foreach (var guard in FindObjectsOfType<Human>())
         {
             if (guard.IsPlayer)
             {
                 continue;
             }
-            guard.FindMyDirection(RealMap[nowStage]);
+
+            if (!withGuilty && guard.IsGuilty)
+            {
+                continue;
+            }
+            
+            guard.FindMyDirection(IsReal ? RealMap[nowStage] : DreamMap[nowStage]);
         }
     }
 
@@ -82,11 +103,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(obj);
         }
+        Debug.Log($"sub map : {SubMap[0,0]}");
         foreach (var obj in SubMap)
         {
-            obj.SetActive(true);
+            obj?.SetActive(true);
         }
-
+        
         InGameMap = SubMap;
     }
 
