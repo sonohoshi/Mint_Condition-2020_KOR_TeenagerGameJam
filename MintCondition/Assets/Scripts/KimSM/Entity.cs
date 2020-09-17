@@ -55,7 +55,11 @@ public class Entity : MonoBehaviour
         }
 
         // 경비병이나 상자 등에 의해 막혔을 경우, 왜 막혔는지를 확인하기 위해 진로를 가로막은 오브젝트의 종류를 반환한다.
-        if (map[toPosX, toPosY] == wall || map[toPosX, toPosY] == box || map[toPosX, toPosY] == enemy || map[toPosX, toPosY] == nullPointer)
+        if (map[toPosX, toPosY] == wall 
+            || map[toPosX, toPosY] == box 
+            || map[toPosX, toPosY] == enemy 
+            || map[toPosX, toPosY] == nullPointer
+            || map[toPosX,toPosY] == guilty)
         {
             return map[toPosX, toPosY];
         }
