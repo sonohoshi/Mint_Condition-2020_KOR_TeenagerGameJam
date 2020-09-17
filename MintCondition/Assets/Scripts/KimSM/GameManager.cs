@@ -55,8 +55,8 @@ public class GameManager : MonoBehaviour
             {4, 4, 4, 3, 4, 4},
             {4, 4, 4, 1, 4, 4},
             {4, 4, 4, 1, 4, 4},
-            {4, 1, 1, 1, 4, 4},
-            {4, 1, 2, 1, 4, 4},
+            {4, 4, 1, 1, 1, 4},
+            {4, 4, 1, 2, 1, 4},
             {3, 1, 1, 1, 1, 6}
         };
         DreamMap[1] = new int[9, 6]
@@ -67,8 +67,8 @@ public class GameManager : MonoBehaviour
             {4, 4, 4, 1, 4, 4},
             {4, 4, 4, 1, 4, 4},
             {4, 4, 4, 1, 4, 4},
-            {4, 1, 1, 1, 4, 4},
-            {4, 1, 2, 1, 4, 4},
+            {4, 4, 1, 1, 1, 4},
+            {4, 4, 1, 2, 1, 4},
             {1, 1, 1, 1, 1, 5}
         };
         RealMap[2] = new int[6, 12]
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
         };
 
         cameraSize[0] = 18;
-        cameraSize[1] = 20;
+        cameraSize[1] = 25;
         
         nowStage = PrivateSceneManager.SceneManager.nowStage - 1;
         MapInitializing(nowStage, IsReal);
