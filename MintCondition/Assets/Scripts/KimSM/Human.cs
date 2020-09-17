@@ -8,7 +8,6 @@ public class Human : Entity
 {
     private bool isFinding;
     private int bullet;
-    private int moveCount;
     private Animator playerAnimator;
     private List<KeyValuePair<MoveDirection, MoveDirection>> shotDirectionList;
     
@@ -23,7 +22,6 @@ public class Human : Entity
     void Start()
     {
         isFinding = false;
-        moveCount = 0;
         map = GameManager.Instance.IsReal
             ? GameManager.Instance.RealMap[PrivateSceneManager.SceneManager.nowStage - 1]
             : GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1];
@@ -119,38 +117,25 @@ public class Human : Entity
 
         if (moveResult == 2)
         {
-            moveCount++;
-            var turn3 = moveCount == 3;
             isAnimating = true;
             playerAnimator.SetTrigger("StartKick");
             StartCoroutine(CheckAnimationCompleted("PlayerKick", (() =>
             {
                 playerAnimator.SetTrigger("EndKick");
-                GameManager.Instance.DoFindAll(turn3);
+                GameManager.Instance.DoFindAll();
                 isAnimating = false;
-                if (turn3)
-                {
-                    moveCount = 0;
-                }
             })));
         }
 
-        if (moveResult == 1 || moveResult == 6)
+        if (moveResult == 1/* || moveResult == 6*/)
         {
             isAnimating = true;
-            moveCount++;
-            Debug.Log($"move : {moveCount}");
-            var turn3 = moveCount == 3;
             playerAnimator.SetTrigger("StartMove");
             StartCoroutine(CheckAnimationCompleted("PlayerMove", (() =>
             {
                 playerAnimator.SetTrigger("EndMove");
                 isAnimating = false;
-                GameManager.Instance.DoFindAll(turn3);
-                if (turn3)
-                {
-                    moveCount = 0;
-                }
+                GameManager.Instance.DoFindAll();
             })));
         }
 
@@ -163,33 +148,56 @@ public class Human : Entity
 
     private void GetAttackInput()
     {
-        if (isFinding || bullet <= 0)
-        {
-            return;
-        }
-
         KeyValuePair<int, int> findResult = new KeyValuePair<int, int>(-1, -1);
         KeyValuePair<MoveDirection,MoveDirection> firingPos = new KeyValuePair<MoveDirection, MoveDirection>();
         if (Input.GetKeyUp(KeyCode.UpArrow))
         {
+#if UNITY_EDITOR
+            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
+#endif
+            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            {
+                return;
+            }
             Find(MoveDirection.UpOrLeft, MoveDirection.InPlace, map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.UpOrLeft, MoveDirection.InPlace);
         }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
+#if UNITY_EDITOR
+            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
+#endif
+            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            {
+                return;
+            }
             Find(MoveDirection.InPlace, MoveDirection.UpOrLeft, map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.UpOrLeft);
         }
         
         if (Input.GetKeyUp(KeyCode.DownArrow))
         {
+#if UNITY_EDITOR
+            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
+#endif
+            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            {
+                return;
+            }
             Find(MoveDirection.DownOrRight, MoveDirection.InPlace, map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.DownOrRight, MoveDirection.InPlace);
         }
         
         if (Input.GetKeyUp(KeyCode.RightArrow))
         {
+#if UNITY_EDITOR
+            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
+#endif
+            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            {
+                return;
+            }
             Find(MoveDirection.InPlace, MoveDirection.DownOrRight, map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.DownOrRight);
         }
@@ -251,9 +259,13 @@ public class Human : Entity
     public override GameObject Find(MoveDirection x, MoveDirection y, int[,] map, out KeyValuePair<int,int> index)
     {
         var findResult = base.Find(x, y, map, out index);
-        
+
         if (findResult != null)
         {
+            if (!IsPlayer && map[index.Key, index.Value] == 2)
+            {
+                return null;
+            }
             findResult.GetComponent<Entity>().Damaged(index.Key, index.Value, map);
         }
 
