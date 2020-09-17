@@ -119,3 +119,5 @@ MonoBehaviour:
   IsPlayer: 1
   IsGuilty: 0
   IsGuard: 0
+  deadSprite: {fileID: 21300000, guid: fb25ce99cc613af4486f0c11b7b44e18, type: 3}
+  directionSprites: []

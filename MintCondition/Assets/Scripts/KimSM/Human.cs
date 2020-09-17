@@ -16,6 +16,7 @@ public class Human : Entity
     public bool IsGuilty;
     public bool IsGuard;
 
+    public Sprite deadSprite;
     public Sprite[] directionSprites;
     public int[,] map;
 
@@ -118,12 +119,19 @@ public class Human : Entity
 
         if (moveResult == 2)
         {
+            moveCount++;
+            var turn3 = moveCount == 3;
             isAnimating = true;
             playerAnimator.SetTrigger("StartKick");
             StartCoroutine(CheckAnimationCompleted("PlayerKick", (() =>
             {
                 playerAnimator.SetTrigger("EndKick");
+                GameManager.Instance.DoFindAll(turn3);
                 isAnimating = false;
+                if (turn3)
+                {
+                    moveCount = 0;
+                }
             })));
         }
 
@@ -256,7 +264,23 @@ public class Human : Entity
     {
         base.Damaged(x, y, map);
         Debug.Log($"human damaged {x}, {y}");
-        Destroy(gameObject);
+
+        if (IsPlayer)
+        {
+            isMoving = true;
+            isAnimating = true;
+            playerAnimator.SetTrigger("Dead");
+            StartCoroutine(CheckAnimationCompleted("PlayerDead", () =>
+            {
+                IsPlayer = false;
+                GetComponent<SpriteRenderer>().sprite = null;
+                playerAnimator.SetTrigger("DeadEnd");
+            }));
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public Human SetIsPlayer(bool isPlr)
