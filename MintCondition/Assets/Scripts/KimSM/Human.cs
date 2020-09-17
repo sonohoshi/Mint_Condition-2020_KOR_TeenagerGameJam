@@ -311,16 +311,6 @@ public class Human : Entity
         return this;
     }
 
-    private IEnumerator CheckAnimationCompleted(string currentAnim, Action onComplete)
-    {
-        while (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName(currentAnim))
-        {
-            yield return null;
-        }
-
-        onComplete?.Invoke();
-    }
-
     private void UpdateMap()
     {
         map = GameManager.Instance.DreamMap[PrivateSceneManager.SceneManager.nowStage - 1];

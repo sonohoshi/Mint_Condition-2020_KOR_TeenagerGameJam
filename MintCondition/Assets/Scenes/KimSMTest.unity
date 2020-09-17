@@ -418,8 +418,8 @@ MonoBehaviour:
   - {fileID: 5012251270628419942, guid: 11334b75e2257a546aa38a774e6677ea, type: 3}
   - {fileID: 929111261}
   - {fileID: 480579509223293529, guid: 14870b7228e76164994c11d8f1c779c3, type: 3}
-  GuardArray: []
-  isReal: 1
+  MaxBullets: 
+  IsReal: 1
 --- !u!1 &1815619027
 GameObject:
   m_ObjectHideFlags: 0

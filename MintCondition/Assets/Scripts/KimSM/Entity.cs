@@ -164,4 +164,15 @@ public class Entity : MonoBehaviour
     {
         return (x >= 0 && x < map.GetLength(0)) && (y >= 0 && y < map.Length / map.GetLength(0));
     }
+    
+    protected IEnumerator CheckAnimationCompleted(string currentAnim, Action onComplete)
+    {
+        var animator = GetComponent<Animator>();
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(currentAnim))
+        {
+            yield return null;
+        }
+
+        onComplete?.Invoke();
+    }
 }

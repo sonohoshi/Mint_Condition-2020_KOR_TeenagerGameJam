@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,10 @@ public class Box : Entity
         }
 
         Debug.Log($"box damaged {x}, {y}, wasExit : {wasExit}, map : {map[x, y]}");
-        Destroy(gameObject);
+        GetComponent<Animator>().SetTrigger("BoxDamaged");
+        StartCoroutine(CheckAnimationCompleted("BoxDamaged", (() =>
+        {
+            Destroy(gameObject);
+        })));
     }
 }
