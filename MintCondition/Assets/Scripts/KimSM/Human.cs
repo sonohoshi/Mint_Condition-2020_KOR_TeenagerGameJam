@@ -152,9 +152,6 @@ public class Human : Entity
         KeyValuePair<MoveDirection,MoveDirection> firingPos = new KeyValuePair<MoveDirection, MoveDirection>();
         if (Input.GetKeyUp(KeyCode.UpArrow))
         {
-#if UNITY_EDITOR
-            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
-#endif
             if (isFinding || bullet <= 0 || isMoving || isAnimating)
             {
                 return;
@@ -165,22 +162,19 @@ public class Human : Entity
 
         if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
-#if UNITY_EDITOR
-            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
-#endif
             if (isFinding || bullet <= 0 || isMoving || isAnimating)
             {
                 return;
             }
             Find(MoveDirection.InPlace, MoveDirection.UpOrLeft, map, out findResult);
+            var scale = transform.localScale;
+            scale.x = -1.5f;
+            transform.localScale = scale;
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.UpOrLeft);
         }
         
         if (Input.GetKeyUp(KeyCode.DownArrow))
         {
-#if UNITY_EDITOR
-            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
-#endif
             if (isFinding || bullet <= 0 || isMoving || isAnimating)
             {
                 return;
@@ -191,20 +185,21 @@ public class Human : Entity
         
         if (Input.GetKeyUp(KeyCode.RightArrow))
         {
-#if UNITY_EDITOR
-            Debug.Log($"finding : {isFinding}, moving : {isMoving}, animating : {isAnimating}");
-#endif
             if (isFinding || bullet <= 0 || isMoving || isAnimating)
             {
                 return;
             }
             Find(MoveDirection.InPlace, MoveDirection.DownOrRight, map, out findResult);
+            var scale = transform.localScale;
+            scale.x = 1.5f;
+            transform.localScale = scale;
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.DownOrRight);
         }
 
         if (findResult.Key != -1)
         {
             bullet--;
+            GameManager.Instance.MaxBullets[PrivateSceneManager.SceneManager.nowStage - 1]--;
             isFinding = true;
             playerAnimator.SetTrigger("StartAttack");
             StartCoroutine(CheckAnimationCompleted("PlayerShot", (() =>
