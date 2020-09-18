@@ -23,7 +23,7 @@ public class TextTransform : MonoBehaviour
     public Sprite[] endingImage;
     void Start()
     {
-        cutScene = PrivateSceneManager.Manager.nowStage;
+        cutScene = PrivateSceneManager.Manager.nowCutScene;
         StartCoroutine(TextPractice());
         Debug.Log(cutScene);
     }
@@ -77,6 +77,8 @@ public class TextTransform : MonoBehaviour
             backGround.sprite = cut1Image[4];
             yield return StartCoroutine(NormalChat("그런 날들이 오늘도 시작된다."));
             yield return new WaitForSeconds(1.5f);
+            PrivateSceneManager.Manager.nowCutScene++;
+            PrivateSceneManager.Manager.isStoryTelling = false;
             SceneManager.LoadScene("Stage_1");
             // Scene 이동
         }
@@ -124,7 +126,9 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(.3f);
             yield return StartCoroutine(NormalChat("오늘 잠자리도 사납겠구나..."));
             yield return new WaitForSeconds(1.0f);
-            SceneManager.LoadScene("Stage_2");
+            PrivateSceneManager.Manager.nowCutScene++;
+            PrivateSceneManager.Manager.isStoryTelling = false;
+            SceneManager.UnloadSceneAsync("IMGCutScene");
         }
         if(cutScene == 3)
         {
@@ -161,7 +165,9 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("타겟이 아닌 거대 기업 데니로 향한다."));
             yield return new WaitForSeconds(1.0f);
-            SceneManager.LoadScene("Stage_3");
+            PrivateSceneManager.Manager.nowCutScene++;
+            PrivateSceneManager.Manager.isStoryTelling = false;
+            SceneManager.LoadScene("Stage_2");
         }
         if(cutScene == 4)
         {
@@ -217,7 +223,9 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("\"이게 내가아는 전부야, 용서해줘 젠장!\"", "-사장-"));
             yield return new WaitForSeconds(1.0f);
-            SceneManager.LoadScene("Stage_4");
+            PrivateSceneManager.Manager.nowCutScene++;
+            PrivateSceneManager.Manager.isStoryTelling = false;
+            SceneManager.UnloadSceneAsync("IMGCutScene");
         }
         if (cutScene == 5)
         {
@@ -245,6 +253,7 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("..X다."));
             yield return new WaitForSeconds(1.0f);
+            PrivateSceneManager.Manager.isStoryTelling = false;
         }
     }
 }
