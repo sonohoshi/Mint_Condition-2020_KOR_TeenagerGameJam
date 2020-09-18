@@ -17,7 +17,7 @@ public class PrivateSceneManager : MonoBehaviour
         if (thisObj == null)
         {
             gameObject.tag = "SceneManager";
-            nowStage = 2;
+            nowStage = 1;
             thisObj = gameObject;
             Manager = this;
             DontDestroyOnLoad(thisObj);

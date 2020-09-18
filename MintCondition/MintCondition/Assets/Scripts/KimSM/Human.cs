@@ -9,8 +9,9 @@ public class Human : Entity
     private bool isFinding;
     private int bullet;
     private Animator playerAnimator;
+    private readonly string[] guiltyHexColor = new [] {"#0DE7EE","#6E6EB0","#E3D85D","#6C4397","#BE667B"};
     private List<KeyValuePair<MoveDirection, MoveDirection>> shotDirectionList;
-    
+
     public bool IsPlayer;
     public bool IsGuilty;
     public bool IsGuard;
@@ -215,17 +216,6 @@ public class Human : Entity
             isFinding = true;
             playerAnimator.SetTrigger("StartAttack");
 
-            /*
-            ShootEffect shoot = null;
-            
-            if (shoot == null)
-            {
-                shoot = null; //Instantiate(ShootEffect, instanceShoot, Quaternion.identity);
-            }
-            else
-                shoot.Shoot();
-            */
-
             StartCoroutine(CheckAnimationCompleted("PlayerShot", (() =>
             {
                 playerAnimator.SetTrigger("EndAttack");
@@ -241,6 +231,9 @@ public class Human : Entity
                     SetMyType(7).
                     SetXAndY(posX,posY).
                     gameObject;
+                var color = new Color();
+                ColorUtility.TryParseHtmlString(guiltyHexColor[PrivateSceneManager.Manager.nowStage-1],out color);
+                GameManager.Instance.SubMap[posX, posY].GetComponent<SpriteRenderer>().color = color;
                 GameManager.Instance.SubMap[posX,posY].SetActive(false);
                 GameManager.Instance.DreamMap[PrivateSceneManager.Manager.nowStage - 1][posX, posY] = 7;
             }

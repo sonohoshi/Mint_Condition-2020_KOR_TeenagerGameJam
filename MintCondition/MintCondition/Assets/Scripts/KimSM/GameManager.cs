@@ -30,8 +30,11 @@ public class GameManager : MonoBehaviour
         // 총 5개의 스테이지를 만들 것이므로 5개의 2차원 배열을 가지는 3차원 가변 배열 생성
         RealMap = new int[4][,];
         DreamMap = new int[4][,];
-        cameraSize = new int[4];
-        // 1스테이지 맵 구조 초기화
+        cameraSize = new int[4]
+        {
+            18, 25, 20, 40
+        };
+            // 1스테이지 맵 구조 초기화
         RealMap[0] = new int[5, 11]
         {
             {4, 4, 1, 1, 3, 4, 4, 4, 4, 4, 4},
@@ -76,24 +79,21 @@ public class GameManager : MonoBehaviour
         {
             {4, 4, 4, 4, 4, 4, 4, 4, 3, 4, 4, 4},
             {4, 4, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4},
-            {4, 4, 4, 4, 1, 4, 1, 2, 1, 1, 1, 6},
-            {4, 4, 3, 1, 1, 4, 1, 1, 4, 4, 4, 4},
-            {4, 4, 1, 3, 1, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 1, 1, 1, 2, 1, 1, 1, 6},
+            {4, 4, 1, 1, 1, 4, 1, 1, 4, 4, 4, 4},
+            {4, 4, 1, 1, 3, 4, 4, 4, 4, 4, 4, 4},
             {5, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4}
         };
         DreamMap[2] = new int[6, 12]
         {
             {4, 4, 4, 4, 4, 4, 4, 4, 1, 4, 4, 4},
             {4, 4, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4},
-            {4, 4, 4, 4, 1, 4, 1, 2, 1, 1, 1, 5},
+            {4, 4, 4, 4, 1, 1, 1, 2, 1, 1, 1, 5},
             {4, 4, 1, 1, 1, 4, 1, 1, 4, 4, 4, 4},
-            {4, 4, 1, 4, 1, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4},
             {6, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4}
         };
 
-        cameraSize[0] = 18;
-        cameraSize[1] = 25;
-        
         nowStage = PrivateSceneManager.Manager.nowStage - 1;
         MapInitializing(nowStage, IsReal);
 
@@ -176,6 +176,7 @@ public class GameManager : MonoBehaviour
 
                 if (map[i, j] == 3)
                 {
+                    Debug.Log($"n번째 경비원 : {guardIndex + 1}");
                     var direction = directions[guardIndex++].Split(',');
                     foreach (var dir in direction)
                     {
