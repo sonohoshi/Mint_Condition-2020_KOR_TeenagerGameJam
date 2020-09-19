@@ -150,6 +150,8 @@ public class Human : Entity
 
     private void GetAttackInput()
     {
+        var isUpDirection = false;
+        var isDownDirection = false;
         KeyValuePair<int, int> findResult = new KeyValuePair<int, int>(-1, -1);
         KeyValuePair<MoveDirection,MoveDirection> firingPos = new KeyValuePair<MoveDirection, MoveDirection>();
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -160,6 +162,7 @@ public class Human : Entity
             }
             Find(MoveDirection.UpOrLeft, MoveDirection.InPlace, Map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.UpOrLeft, MoveDirection.InPlace);
+            isUpDirection = true;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -188,6 +191,7 @@ public class Human : Entity
             }
             Find(MoveDirection.DownOrRight, MoveDirection.InPlace, Map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.DownOrRight, MoveDirection.InPlace);
+            isDownDirection = true;
         }
         
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -214,14 +218,35 @@ public class Human : Entity
             bullet--;
             GameManager.Instance.MaxBullets[PrivateSceneManager.Manager.nowStage - 1]--;
             isFinding = true;
-            playerAnimator.SetTrigger("StartAttack");
-
-            StartCoroutine(CheckAnimationCompleted("PlayerShot", (() =>
+            if (isUpDirection)
             {
-                playerAnimator.SetTrigger("EndAttack");
-                isFinding = false;
-            })));
-            
+                playerAnimator.SetTrigger("UpShotStart");
+                StartCoroutine(CheckAnimationCompleted("PlayerUpShot", (() =>
+                {
+                    playerAnimator.SetTrigger("UpShotEnd");
+                    isFinding = false;
+                })));
+            }
+            else if (isDownDirection)
+            {
+                playerAnimator.SetTrigger("DownShotStart");
+                StartCoroutine(CheckAnimationCompleted("PlayerDownShot", (() =>
+                {
+                    playerAnimator.SetTrigger("DownShotEnd");
+                    isFinding = false;
+                })));
+            }
+            else
+            {
+                playerAnimator.SetTrigger("StartAttack");
+
+                StartCoroutine(CheckAnimationCompleted("PlayerShot", (() =>
+                {
+                    playerAnimator.SetTrigger("EndAttack");
+                    isFinding = false;
+                })));
+            }
+
             if (GameManager.Instance.IsReal)
             {
                 var guiltyObj = Instantiate(GameManager.Instance.Obj[7], new Vector3(posY * tileSize, -posX * tileSize, 0),
