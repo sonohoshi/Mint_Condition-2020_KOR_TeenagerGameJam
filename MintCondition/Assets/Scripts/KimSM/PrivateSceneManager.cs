@@ -6,19 +6,24 @@ using UnityEngine.SceneManagement;
 public class PrivateSceneManager : MonoBehaviour
 {
     public static PrivateSceneManager Manager;
+    public AudioClip RealBGM;
+    public AudioClip DreamBGM;
     public GameObject thisObj;
     public int nowStage = 1;
     public int nowCutScene = 1;
     public bool isStoryTelling;
 
+    public AudioSource AudioSourceVar;
     private float nowTime;
     
     void Awake()
     {
         isStoryTelling = false;
         thisObj = GameObject.FindWithTag("SceneManager");
+        AudioSourceVar = GetComponent<AudioSource>();
         if (thisObj == null)
         {
+            AudioSourceVar.clip = RealBGM;
             gameObject.tag = "SceneManager";
             nowStage = 1;
             thisObj = gameObject;
@@ -29,7 +34,7 @@ public class PrivateSceneManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.R))
+        if (Input.GetKeyUp(KeyCode.R) && !isStoryTelling)
         {
             switch (nowStage)
             {
@@ -38,8 +43,20 @@ public class PrivateSceneManager : MonoBehaviour
                     nowCutScene--;
                     break;
             }
-
+            AudioSourceVar.Pause();
+            SetBGMReal();
+            AudioSourceVar.Play();
             SceneManager.LoadScene($"Stage_{nowStage}");
         }
+    }
+
+    public void SetBGMDream()
+    {
+        AudioSourceVar.clip = DreamBGM;
+    }
+
+    public void SetBGMReal()
+    {
+        AudioSourceVar.clip = RealBGM;
     }
 }

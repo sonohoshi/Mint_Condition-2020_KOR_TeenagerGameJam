@@ -9,6 +9,7 @@ public class Human : Entity
     private bool isFinding;
     private int bullet;
     private Animator playerAnimator;
+    private AudioSource audioSource;
     private readonly string[] guiltyHexColor = new [] {"#0DE7EE","#6E6EB0","#E3D85D","#6C4397","#BE667B"};
     private List<KeyValuePair<MoveDirection, MoveDirection>> shotDirectionList;
 
@@ -23,6 +24,7 @@ public class Human : Entity
     
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         isFinding = false;
         Map = GameManager.Instance.IsReal
             ? GameManager.Instance.RealMap[PrivateSceneManager.Manager.nowStage - 1]
@@ -135,6 +137,7 @@ public class Human : Entity
 
         if (moveResult == 1)
         {
+            audioSource.Play();
             isAnimating = true;
             playerAnimator.SetTrigger("StartMove");
             StartCoroutine(CheckAnimationCompleted("PlayerMove", (() =>

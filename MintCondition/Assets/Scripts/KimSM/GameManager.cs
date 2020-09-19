@@ -158,6 +158,8 @@ public class GameManager : MonoBehaviour
     {
         IsReal = false;
         MaxBullets[nowStage] = 0;
+        PrivateSceneManager.Manager.AudioSourceVar.Pause();
+        PrivateSceneManager.Manager.SetBGMDream();
         var objs = GameObject.FindGameObjectsWithTag("Object");
         var bg = GameObject.FindWithTag("StageBG").GetComponent<SpriteRenderer>();
         var guiltys = GameObject.FindGameObjectsWithTag("NotRemove");
@@ -182,6 +184,10 @@ public class GameManager : MonoBehaviour
         {
             PrivateSceneManager.Manager.isStoryTelling = true;
             SceneManager.LoadScene("IMGCutScene", LoadSceneMode.Additive);
+        }
+        else
+        {
+            PrivateSceneManager.Manager.AudioSourceVar.Play();
         }
     }
 

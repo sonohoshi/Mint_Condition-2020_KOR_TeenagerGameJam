@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Box : Entity
 {
+    private AudioSource audioSource = null;
+
     public override int Move(MoveDirection x, MoveDirection y, int[,] map)
     {
         var wasX = posX - (int) x;
@@ -16,6 +18,12 @@ public class Box : Entity
             map[wasX, wasY] = 6;
             wasExit = false;
         }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+        audioSource.Play();
 
         return moveResult;
     }
