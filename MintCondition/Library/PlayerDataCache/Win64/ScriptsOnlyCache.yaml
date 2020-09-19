@@ -4,6 +4,7 @@ ScriptsOnlyBuild:
     - AudioManager
     - GameManager
     - Human
+    - LeftBulletUI
     - PrivateSceneManager
     - ShootEffect
     - TextTransform
@@ -137,6 +138,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11514}
     - Class: 114
+      Script: {instanceID: 11518}
+    - Class: 114
       Script: {instanceID: 11838}
     - Class: 114
       Script: {instanceID: 12180}
@@ -188,12 +191,26 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11168}
+    - Class: 114
+      Script: {instanceID: 11458}
+    - Class: 114
       Script: {instanceID: 11500}
+    - Class: 114
+      Script: {instanceID: 11518}
     - Class: 114
       Script: {instanceID: 11838}
     - Class: 114
+      Script: {instanceID: 12180}
+    - Class: 114
+      Script: {instanceID: 13650}
+    - Class: 114
       Script: {instanceID: 14034}
+    - Class: 114
+      Script: {instanceID: 14264}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -202,6 +219,12 @@ ScriptsOnlyBuild:
     - Class: 212
       Script: {instanceID: 0}
     - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     Assets/Scenes/Stage_3.unity:
     - Class: 1
@@ -227,12 +250,22 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11168}
+    - Class: 114
+      Script: {instanceID: 11458}
+    - Class: 114
       Script: {instanceID: 11500}
+    - Class: 114
+      Script: {instanceID: 11518}
     - Class: 114
       Script: {instanceID: 11838}
     - Class: 114
+      Script: {instanceID: 13650}
+    - Class: 114
       Script: {instanceID: 14034}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -241,6 +274,12 @@ ScriptsOnlyBuild:
     - Class: 212
       Script: {instanceID: 0}
     - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     Assets/Scenes/Stage_4.unity:
     - Class: 1
@@ -266,12 +305,22 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11168}
+    - Class: 114
+      Script: {instanceID: 11458}
+    - Class: 114
       Script: {instanceID: 11500}
+    - Class: 114
+      Script: {instanceID: 11518}
     - Class: 114
       Script: {instanceID: 11838}
     - Class: 114
+      Script: {instanceID: 13650}
+    - Class: 114
       Script: {instanceID: 14034}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -280,6 +329,12 @@ ScriptsOnlyBuild:
     - Class: 212
       Script: {instanceID: 0}
     - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     Assets/Scenes/Stage_5.unity:
     - Class: 1
@@ -305,12 +360,22 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 11168}
+    - Class: 114
+      Script: {instanceID: 11458}
+    - Class: 114
       Script: {instanceID: 11500}
+    - Class: 114
+      Script: {instanceID: 11518}
     - Class: 114
       Script: {instanceID: 11838}
     - Class: 114
+      Script: {instanceID: 13650}
+    - Class: 114
       Script: {instanceID: 14034}
     - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -319,6 +384,12 @@ ScriptsOnlyBuild:
     - Class: 212
       Script: {instanceID: 0}
     - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
   scriptHashData:
   - hash:
@@ -605,7 +676,7 @@ ScriptsOnlyBuild:
     className: RemoteTestResultSender
   - hash:
       serializedVersion: 2
-      Hash: b81e409aa36aa7d4492fdc820bd66016
+      Hash: 01521425da64f413df2834cf78d3fa49
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TextTransform
