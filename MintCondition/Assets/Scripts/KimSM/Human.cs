@@ -56,21 +56,25 @@ public class Human : Entity
             shotDirectionList[0].Value == MoveDirection.InPlace)
         {
             GetComponent<SpriteRenderer>().sprite = DirectionSprites[0];
+            Debug.Log("down dir");
         }
         else if (shotDirectionList[0].Key == MoveDirection.InPlace &&
                  shotDirectionList[0].Value == MoveDirection.UpOrLeft)
         {
             GetComponent<SpriteRenderer>().sprite = DirectionSprites[1];
+            Debug.Log("left dir");
         }
         else if (shotDirectionList[0].Key == MoveDirection.InPlace &&
                  shotDirectionList[0].Value == MoveDirection.DownOrRight)
         {
             GetComponent<SpriteRenderer>().sprite = DirectionSprites[2];
+            Debug.Log("right dir");
         }
         else if (shotDirectionList[0].Key == MoveDirection.UpOrLeft &&
                   shotDirectionList[0].Value == MoveDirection.InPlace)
         {
             GetComponent<SpriteRenderer>().sprite = DirectionSprites[3];
+            Debug.Log("up dir");
         }
         
         return this;
@@ -370,15 +374,7 @@ public class Human : Entity
         }
         else
         {
-            if (shotDirectionList[0].Value > 0)
-            {
-                var transformScale = transform.localScale;
-                transformScale.x *= -1;
-                transform.localScale = transformScale;
-            }
-            var animator = GetComponent<Animator>();
-            animator.SetTrigger("Damaged");
-            StartCoroutine(CheckAnimationCompleted("GuardDamaged", (() => Destroy(gameObject))));
+            Destroy(gameObject);
         }
     }
 
