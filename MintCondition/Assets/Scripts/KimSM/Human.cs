@@ -298,7 +298,7 @@ public class Human : Entity
                 var color = new Color();
                 ColorUtility.TryParseHtmlString(guiltyHexColor[PrivateSceneManager.Manager.nowStage-1],out color);
                 GameManager.Instance.SubMap[posX, posY].GetComponent<SpriteRenderer>().color = color;
-                GameManager.Instance.SubMap[posX,posY].SetActive(false);
+                GameManager.Instance.SubMap[posX, posY].tag = "NotRemove";
                 GameManager.Instance.DreamMap[PrivateSceneManager.Manager.nowStage - 1][posX, posY] = 7;
             }
         }

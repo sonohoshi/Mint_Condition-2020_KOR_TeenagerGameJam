@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
         };
         DreamMap[4] = new int[11, 12]
         {
-            {4, 4, 4, 4, 4, 1, 1, 1, 1, 4, 5, 4},
+            {4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 5, 4},
             {4, 4, 4, 4, 4, 1, 4, 4, 4, 4, 4, 4},
             {4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1},
             {4, 4, 4, 4, 4, 1, 4, 4, 4, 4, 2, 4},
@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var guard in FindObjectsOfType<Human>())
         {
-            if (guard.IsPlayer)
+            if (guard.IsPlayer || guard.gameObject.CompareTag("NotRemove"))
             {
                 continue;
             }
@@ -159,8 +159,12 @@ public class GameManager : MonoBehaviour
         IsReal = false;
         var objs = GameObject.FindGameObjectsWithTag("Object");
         var bg = GameObject.FindWithTag("StageBG").GetComponent<SpriteRenderer>();
+        var guiltys = GameObject.FindGameObjectsWithTag("NotRemove");
         bg.sprite = Backgrounds[PrivateSceneManager.Manager.nowStage - 1];
-        
+        foreach (var guilty in guiltys)
+        {
+            guilty.tag = "Object";
+        }
         foreach (var obj in objs)
         {
             Destroy(obj);
