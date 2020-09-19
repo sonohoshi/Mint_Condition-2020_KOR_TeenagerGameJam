@@ -10,7 +10,6 @@ public class TextTransform : MonoBehaviour
     public Text charatorText;
     private string writerText = "";
     private string writerTextName = "";
-    public int forText = 1;
     private int cutScene = 1;
     public AudioManager audioMg;
     public AudioClip textSound;
@@ -36,10 +35,9 @@ public class TextTransform : MonoBehaviour
         charatorText.text = writerTextName;
         for (a = 0; a < narration.Length; a++)
         {
-            if (Input.anyKey)
+            if (Input.GetKey(KeyCode.Space))
             {
                 ChatText.text = narration;
-
             }
             else
             {
@@ -147,6 +145,7 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("내가 저지른 일에 대한 악몽을 꾸었다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut3Image[1];
             yield return StartCoroutine(NormalChat("\"세뇌...\"","X"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("타겟이 했던 말에 신뢰가 간다."));
@@ -155,12 +154,14 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             yield return StartCoroutine(NormalChat("어딘가 이상했던 부분들이 모두 \n설명이 된다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut3Image[2];
             yield return StartCoroutine(NormalChat("무엇보다 나는 이 지긋지긋한 일을 \n그만두고 싶다."));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("나의 모든 것을 꿰뚫고 이용하는 "));
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("그들의 족쇄에서 벗어나고싶다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut3Image[3];
             yield return StartCoroutine(NormalChat("다음날 나는, "));
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("타겟이 아닌 거대 기업 데니로 향한다."));
@@ -201,10 +202,12 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             yield return StartCoroutine(NormalChat("\"지금처럼 베어내지 않는다면!!!\"","-사장-"));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut4Image[1];
             yield return StartCoroutine(NormalChat("나는 그의 신체 일부를 잘라냈다."));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("\"으아아아악!!!!\"","-사장-"));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut4Image[2];
             yield return StartCoroutine(NormalChat("\"알겠어, 알겠다고!\"","-사장-"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("그가 말을 이어나갔다.","-사장-"));
@@ -219,9 +222,14 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(0.8f);
             yield return StartCoroutine(NormalChat("\"없애는게 니가 해왔던 임무야.\"", "-사장-"));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = cut4Image[3];
             yield return StartCoroutine(NormalChat("\"그게 어떤 단체든, 군대든, 국가든말이야.\"", "-사장-"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("\"이게 내가아는 전부야, 용서해줘 젠장!\"", "-사장-"));
+            yield return new WaitForSeconds(1.0f);
+            yield return StartCoroutine(NormalChat("이제 내가 하는 일이 옳다는 것을 알았다", "X"));
+            yield return new WaitForSeconds(1.0f);
+            yield return StartCoroutine(NormalChat("나는 상관이었던 그를 제거하고 뒤돌아선다", "--"));
             yield return new WaitForSeconds(1.0f);
             PrivateSceneManager.Manager.nowCutScene++;
             PrivateSceneManager.Manager.isStoryTelling = false;
@@ -229,7 +237,6 @@ public class TextTransform : MonoBehaviour
         }
         if (cutScene == 5)
         {
-
             /*
  Ending Scene
  끝났다/몇십년간 도구로써 사용되었던 나는, 스스로 자유를 얻었다/
@@ -239,16 +246,19 @@ public class TextTransform : MonoBehaviour
             backGround.sprite = endingImage[0];
             yield return StartCoroutine(NormalChat("끝났다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = endingImage[1];
             yield return StartCoroutine(NormalChat("몇십년간 도구로써 사용되었던 나는,"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("스스로 자유를 얻었다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = endingImage[2];
             yield return StartCoroutine(NormalChat("더럽고 피비린내 세계와"));
             yield return new WaitForSeconds(0.8f);
             yield return StartCoroutine(NormalChat("등지고 걸어나간다."));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("밝은 곳을 향해 걸어간다."));
             yield return new WaitForSeconds(1.0f);
+            backGround.sprite = endingImage[3];
             yield return StartCoroutine(NormalChat("나는"));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("..X다."));
@@ -257,20 +267,3 @@ public class TextTransform : MonoBehaviour
         }
     }
 }
-
-
-
-
-
-
-/* yield return StartCoroutine(NormalChat(""));
-    yield return new WaitForSeconds(1.0f);*/
-
-
-//
-//            if (isButtonClicked)
-//            {
-//                ChatText.text = narration;
-//                a = narration.Length; // 버튼 눌리면 그냥 다 출력하게 함
-//                isButtonClicked = false;
-//            }

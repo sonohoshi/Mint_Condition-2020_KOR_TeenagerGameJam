@@ -91,12 +91,12 @@ public class Human : Entity
             return;
         }
         int moveResult = 0;
-        if (Input.GetKeyUp(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
             moveResult = Move(MoveDirection.UpOrLeft, MoveDirection.InPlace, Map);
         }
 
-        if (Input.GetKeyUp(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
             moveResult = Move(MoveDirection.InPlace, MoveDirection.UpOrLeft, Map);
             var scale = transform.localScale;
@@ -104,12 +104,12 @@ public class Human : Entity
             transform.localScale = scale;
         }
         
-        if (Input.GetKeyUp(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
             moveResult = Move(MoveDirection.DownOrRight, MoveDirection.InPlace, Map);
         }
         
-        if (Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
             moveResult = Move(MoveDirection.InPlace, MoveDirection.DownOrRight, Map);
             var scale = transform.localScale;
@@ -152,9 +152,9 @@ public class Human : Entity
     {
         KeyValuePair<int, int> findResult = new KeyValuePair<int, int>(-1, -1);
         KeyValuePair<MoveDirection,MoveDirection> firingPos = new KeyValuePair<MoveDirection, MoveDirection>();
-        if (Input.GetKeyUp(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            if (isFinding || bullet <= 0 || isMoving || isAnimating || !GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
             {
                 return;
             }
@@ -162,9 +162,9 @@ public class Human : Entity
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.UpOrLeft, MoveDirection.InPlace);
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            if (isFinding || bullet <= 0 || isMoving || isAnimating || !GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
             {
                 return;
             }
@@ -180,9 +180,9 @@ public class Human : Entity
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.UpOrLeft);
         }
         
-        if (Input.GetKeyUp(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            if (isFinding || bullet <= 0 || isMoving || isAnimating || !GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
             {
                 return;
             }
@@ -190,9 +190,9 @@ public class Human : Entity
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.DownOrRight, MoveDirection.InPlace);
         }
         
-        if (Input.GetKeyUp(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (isFinding || bullet <= 0 || isMoving || isAnimating)
+            if (isFinding || bullet <= 0 || isMoving || isAnimating || !GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
             {
                 return;
             }
@@ -258,7 +258,9 @@ public class Human : Entity
         if (moveResult == exit && !GameManager.Instance.IsReal)
         {
             PrivateSceneManager.Manager.nowStage++;
-            SceneManager.LoadScene("IMGCutScene");
+            SceneManager.LoadScene(PrivateSceneManager.Manager.nowStage < 3 || PrivateSceneManager.Manager.nowStage == 6
+                ? "IMGCutScene"
+                : $"Stage_{PrivateSceneManager.Manager.nowStage}");
         }
         else if (moveResult == exit && GameManager.Instance.IsReal)
         {
@@ -274,9 +276,14 @@ public class Human : Entity
 
         if (findResult != null)
         {
-            if (!IsPlayer && map[index.Key, index.Value] == 2)
+            if (!IsPlayer && (map[index.Key, index.Value] == 2 || map[index.Key,index.Value] == 4))
             {
                 return null;
+            }
+
+            if (!IsPlayer)
+            {
+                
             }
             findResult.GetComponent<Entity>().Damaged(index.Key, index.Value, map);
         }
@@ -293,10 +300,11 @@ public class Human : Entity
         {
             isMoving = true;
             isAnimating = true;
+            isFinding = true;
             playerAnimator.SetTrigger("Dead");
             StartCoroutine(CheckAnimationCompleted("PlayerDead", () =>
             {
-                IsPlayer = false;
+                //IsPlayer = false;
                 GetComponent<SpriteRenderer>().sprite = null;
                 playerAnimator.SetTrigger("DeadEnd");
             }));

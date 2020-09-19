@@ -730,7 +730,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChatText: {fileID: 640615097}
   charatorText: {fileID: 836524134}
-  forText: 1
   audioMg: {fileID: 1046607151}
   textSound: {fileID: 8300000, guid: 92b8f2fc6058aa54c912550d50665be4, type: 3}
   backGround: {fileID: 2143106296}
@@ -747,11 +746,21 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 57bafca26576d574880a383a07a29ae1, type: 3}
   - {fileID: 21300000, guid: 4f5cea30547f83e408d89421a9faffc2, type: 3}
   cut3Image:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 23b29d67eff7ded48b0986a550c11666, type: 3}
+  - {fileID: 21300000, guid: 3a0495ef69737944dbf8557bd8b06f6e, type: 3}
+  - {fileID: 21300000, guid: 09e2df17d9d5ff34ba18265e9cb28a49, type: 3}
+  - {fileID: 21300000, guid: 6c87315719318f54385255687b17b6a8, type: 3}
   cut4Image:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 54864f09837523b45b20b58e7eb14943, type: 3}
+  - {fileID: 21300000, guid: bcd79a6bc9275e04196953dcb71e695f, type: 3}
+  - {fileID: 21300000, guid: aa8bee1f732cfa2449203f8514027c47, type: 3}
+  - {fileID: 21300000, guid: ea8a6d312814f794b84d3f5cdd0d7b0c, type: 3}
+  - {fileID: 21300000, guid: 0d7b709b9ef938b4b81d4f1db7136aab, type: 3}
   endingImage:
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 5a02a97983fc9c4418970f5c6091e9c6, type: 3}
+  - {fileID: 21300000, guid: 4c78f60c978bb454db02377724e9aa3f, type: 3}
+  - {fileID: 21300000, guid: c1fc08d0e43a48646bd3e4a1f6cf9813, type: 3}
+  - {fileID: 21300000, guid: 804cf6afce737a04f9ba2872317fdb2a, type: 3}
 --- !u!114 &1457254145
 MonoBehaviour:
   m_ObjectHideFlags: 0

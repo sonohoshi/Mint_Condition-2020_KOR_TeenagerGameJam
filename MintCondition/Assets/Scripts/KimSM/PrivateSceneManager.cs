@@ -33,8 +33,8 @@ public class PrivateSceneManager : MonoBehaviour
         {
             switch (nowStage)
             {
-                case 1 when nowCutScene > nowStage:
-                case 2 when nowCutScene == 4:
+                case 1 when nowCutScene == 3:
+                case 2 when nowCutScene == 5:
                     nowCutScene--;
                     break;
             }
