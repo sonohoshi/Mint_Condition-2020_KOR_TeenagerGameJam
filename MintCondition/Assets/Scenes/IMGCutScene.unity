@@ -732,6 +732,8 @@ MonoBehaviour:
   charatorText: {fileID: 836524134}
   audioMg: {fileID: 1046607151}
   textSound: {fileID: 8300000, guid: 92b8f2fc6058aa54c912550d50665be4, type: 3}
+  textSkipSound: {fileID: 8300000, guid: 331d7d93a40c14c49bd420839f91d51f, type: 3}
+  nextSceneSound: {fileID: 8300000, guid: 390389534750b284898b0c73a29de10d, type: 3}
   backGround: {fileID: 2143106296}
   cut1Image:
   - {fileID: 21300000, guid: a98a61146ce294945a00b065f40a9404, type: 3}
@@ -857,7 +859,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -13,7 +13,8 @@ public class TextTransform : MonoBehaviour
     private int cutScene = 1;
     public AudioManager audioMg;
     public AudioClip textSound;
-
+    public AudioClip textSkipSound;
+    public AudioClip nextSceneSound;
     public Image backGround;
     public Sprite[] cut1Image;
     public Sprite[] cut2Image;
@@ -37,6 +38,8 @@ public class TextTransform : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Space))
             {
+                audioMg.PlayAudio(textSkipSound);
+
                 ChatText.text = narration;
             }
             else
@@ -55,9 +58,9 @@ public class TextTransform : MonoBehaviour
         if (cutScene == 1)
         {
             backGround.sprite = cut1Image[0];
-            yield return StartCoroutine(NormalChat("나는 X, 데니의 암살자다."));
+            yield return StartCoroutine(NormalChat("나는 X, 데니의 암살자다.")); 
             yield return new WaitForSeconds(1.0f);
-            backGround.sprite = cut1Image[1];
+            backGround.sprite = cut1Image[1]; 
             yield return StartCoroutine(NormalChat("세계는 매우 혼란한 상태다."));
             yield return new WaitForSeconds(1.0f);
             yield return StartCoroutine(NormalChat("나는 혼란한 세계를 진정시키기 위해"));
@@ -265,5 +268,7 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             PrivateSceneManager.Manager.isStoryTelling = false;
         }
+
     }
+
 }
