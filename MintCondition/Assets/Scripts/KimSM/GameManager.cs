@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
     public void LoadDream()
     {
         IsReal = false;
+        MaxBullets[nowStage - 1] = 0;
         var objs = GameObject.FindGameObjectsWithTag("Object");
         var bg = GameObject.FindWithTag("StageBG").GetComponent<SpriteRenderer>();
         var guiltys = GameObject.FindGameObjectsWithTag("NotRemove");

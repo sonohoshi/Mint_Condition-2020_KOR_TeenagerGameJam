@@ -370,7 +370,15 @@ public class Human : Entity
         }
         else
         {
-            Destroy(gameObject);
+            if (shotDirectionList[0].Value > 0)
+            {
+                var transformScale = transform.localScale;
+                transformScale.x *= -1;
+                transform.localScale = transformScale;
+            }
+            var animator = GetComponent<Animator>();
+            animator.SetTrigger("Damaged");
+            StartCoroutine(CheckAnimationCompleted("GuardDamaged", (() => Destroy(gameObject))));
         }
     }
 
