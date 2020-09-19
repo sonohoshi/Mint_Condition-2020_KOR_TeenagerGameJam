@@ -152,6 +152,7 @@ public class Human : Entity
     {
         var isUpDirection = false;
         var isDownDirection = false;
+        var getedInput = false;
         KeyValuePair<int, int> findResult = new KeyValuePair<int, int>(-1, -1);
         KeyValuePair<MoveDirection,MoveDirection> firingPos = new KeyValuePair<MoveDirection, MoveDirection>();
         if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -160,9 +161,27 @@ public class Human : Entity
             {
                 return;
             }
+            Debug.Log($"bullet : {bullet}");
             Find(MoveDirection.UpOrLeft, MoveDirection.InPlace, Map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.UpOrLeft, MoveDirection.InPlace);
             isUpDirection = true;
+            
+            bullet--;
+            
+            var verticalScale = VerticalShootEffect.transform.localScale;
+            if (verticalScale.x < 0)
+            {
+                verticalScale.x *= -1;
+                var transformPosition = VerticalShootEffect.transform.localPosition;
+                transformPosition.y *= -1;
+                VerticalShootEffect.transform.localScale = verticalScale;
+                VerticalShootEffect.transform.localPosition = transformPosition;
+            }
+            
+            var effect = VerticalShootEffect.GetComponent<ShootEffect>();
+            effect.Shoot();
+
+            getedInput = true;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -176,8 +195,11 @@ public class Human : Entity
             var scale = transform.localScale;
             scale.x = -1.5f;
             
+            bullet--;
             var effect = HorizontalShootEffect.GetComponent<ShootEffect>();
             effect.Shoot();
+            
+            getedInput = true;
             
             transform.localScale = scale;
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.UpOrLeft);
@@ -192,6 +214,22 @@ public class Human : Entity
             Find(MoveDirection.DownOrRight, MoveDirection.InPlace, Map, out findResult);
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.DownOrRight, MoveDirection.InPlace);
             isDownDirection = true;
+            
+            bullet--;
+            
+            var verticalScale = VerticalShootEffect.transform.localScale;
+            if (verticalScale.x > 0)
+            {
+                verticalScale.x *= -1;
+                var transformPosition = VerticalShootEffect.transform.localPosition;
+                transformPosition.y *= -1;
+                VerticalShootEffect.transform.localScale = verticalScale;
+                VerticalShootEffect.transform.localPosition = transformPosition;
+            }
+            
+            var effect = VerticalShootEffect.GetComponent<ShootEffect>();
+            effect.Shoot();
+            getedInput = true;
         }
         
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -205,17 +243,18 @@ public class Human : Entity
             var scale = transform.localScale;
             scale.x = 1.5f;
             
-            HorizontalShootEffect.SetActive(true);
+            bullet--;
             var effect = HorizontalShootEffect.GetComponent<ShootEffect>();
             effect.Shoot();
+            
+            getedInput = true;
             
             transform.localScale = scale;
             firingPos = new KeyValuePair<MoveDirection, MoveDirection>(MoveDirection.InPlace, MoveDirection.DownOrRight);
         }
 
-        if (findResult.Key != -1)
+        if (getedInput)
         {
-            bullet--;
             GameManager.Instance.MaxBullets[PrivateSceneManager.Manager.nowStage - 1]--;
             isFinding = true;
             if (isUpDirection)
@@ -304,11 +343,6 @@ public class Human : Entity
             if (!IsPlayer && (map[index.Key, index.Value] == 2 || map[index.Key,index.Value] == 4))
             {
                 return null;
-            }
-
-            if (!IsPlayer)
-            {
-                
             }
             findResult.GetComponent<Entity>().Damaged(index.Key, index.Value, map);
         }
