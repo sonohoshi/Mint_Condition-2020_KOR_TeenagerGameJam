@@ -176,6 +176,7 @@ public class TextTransform : MonoBehaviour
             yield return new WaitForSeconds(1.0f);
             PrivateSceneManager.Manager.nowCutScene++;
             PrivateSceneManager.Manager.isStoryTelling = false;
+            PrivateSceneManager.Manager.SetBGMReal();
             PrivateSceneManager.Manager.AudioSourceVar.Play();
             SceneManager.LoadScene("Stage_2");
         }

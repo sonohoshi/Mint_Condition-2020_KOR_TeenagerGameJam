@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        MaxBullets = new int[5] {1, 1, 2, 1, 0};
+        MaxBullets = new int[6] {1, 1, 2, 1, 0, 0};
         
         // 총 5개의 스테이지를 만들 것이므로 5개의 2차원 배열을 가지는 3차원 가변 배열 생성
         RealMap = new int[5][,];

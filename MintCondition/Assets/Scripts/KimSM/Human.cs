@@ -36,6 +36,11 @@ public class Human : Entity
             bullet = GameManager.Instance.MaxBullets[PrivateSceneManager.Manager.nowStage - 1];
             Debug.Log($"bullet : {bullet}");
         }
+
+        if (IsGuard)
+        {
+            PrivateSceneManager.Manager.AudioSourceVar.Play();
+        }
     }
     
     // Update is called once per frame
@@ -92,38 +97,41 @@ public class Human : Entity
 
     private void GetMovingInput()
     {
-        if (isFinding)
+        if (isFinding || isAnimating)
         {
             return;
         }
         int moveResult = 0;
-        if (Input.GetKeyDown(KeyCode.W) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+        if (GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
-            moveResult = Move(MoveDirection.UpOrLeft, MoveDirection.InPlace, Map);
+            if (Input.GetKey(KeyCode.W))
+            {
+                moveResult = Move(MoveDirection.UpOrLeft, MoveDirection.InPlace, Map);
+            }
+
+            if (Input.GetKey(KeyCode.A))
+            {
+                moveResult = Move(MoveDirection.InPlace, MoveDirection.UpOrLeft, Map);
+                var scale = transform.localScale;
+                scale.x = -1.5f;
+                transform.localScale = scale;
+            }
+        
+            if (Input.GetKey(KeyCode.S))
+            {
+                moveResult = Move(MoveDirection.DownOrRight, MoveDirection.InPlace, Map);
+            }
+        
+            if (Input.GetKey(KeyCode.D))
+            {
+                moveResult = Move(MoveDirection.InPlace, MoveDirection.DownOrRight, Map);
+                var scale = transform.localScale;
+                scale.x = 1.5f;
+                transform.localScale = scale;
+            }   
         }
 
-        if (Input.GetKeyDown(KeyCode.A) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
-        {
-            moveResult = Move(MoveDirection.InPlace, MoveDirection.UpOrLeft, Map);
-            var scale = transform.localScale;
-            scale.x = -1.5f;
-            transform.localScale = scale;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.S) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
-        {
-            moveResult = Move(MoveDirection.DownOrRight, MoveDirection.InPlace, Map);
-        }
-        
-        if (Input.GetKeyDown(KeyCode.D) && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
-        {
-            moveResult = Move(MoveDirection.InPlace, MoveDirection.DownOrRight, Map);
-            var scale = transform.localScale;
-            scale.x = 1.5f;
-            transform.localScale = scale;
-        }
-
-        if (moveResult == 2)
+        if (moveResult == 2 && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&!isMoving)
         {
             isAnimating = true;
             playerAnimator.SetTrigger("StartKick");
@@ -329,6 +337,7 @@ public class Human : Entity
         if (moveResult == exit && !GameManager.Instance.IsReal)
         {
             PrivateSceneManager.Manager.nowStage++;
+            PrivateSceneManager.Manager.SetBGMReal();
             SceneManager.LoadScene(PrivateSceneManager.Manager.nowStage < 3 || PrivateSceneManager.Manager.nowStage == 6
                 ? "IMGCutScene"
                 : $"Stage_{PrivateSceneManager.Manager.nowStage}");

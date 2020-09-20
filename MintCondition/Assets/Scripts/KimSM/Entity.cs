@@ -151,7 +151,7 @@ public class Entity : MonoBehaviour
 
     protected IEnumerator SmoothMove(Transform original, Vector3 moveTo)
     {
-        for (float time = 0; time <= 1f; time += 0.2f)
+        for (float time = 0; time <= 1f; time += 0.25f)
         {
             original.position = Vector3.Lerp(original.position, moveTo, time);
             yield return new WaitForSeconds(.1f);
