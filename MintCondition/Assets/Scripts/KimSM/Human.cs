@@ -134,16 +134,16 @@ public class Human : Entity
         if (moveResult == 2 && GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&!isMoving)
         {
             isAnimating = true;
-            playerAnimator.SetTrigger("StartKick");
+            playerAnimator.SetBool("DoKick", true);
             StartCoroutine(CheckAnimationCompleted("PlayerKick", (() =>
             {
-                playerAnimator.SetTrigger("EndKick");
+                playerAnimator.SetBool("DoKick", false);
                 GameManager.Instance.DoFindAll();
                 isAnimating = false;
             })));
         }
 
-        if (moveResult == 1)
+        else if (moveResult == 1 && !playerAnimator.GetBool("DoKick"))
         {
             audioSource.Play();
             isAnimating = true;
@@ -156,10 +156,10 @@ public class Human : Entity
             })));
         }
 
-        if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") && !isMoving)
+        else if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") && !isMoving)
         {
             playerAnimator.SetTrigger("EndMove");
-            playerAnimator.SetTrigger("EndKick");
+            //playerAnimator.SetBool("DoKick", false);
         }
     }
 
